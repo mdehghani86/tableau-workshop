@@ -3,484 +3,1041 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tableau Workshop — IE 5374 Storytelling with Data</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Tableau Workshop — IE 5374 Storytelling with Data | AI² Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: #F0F4FA;
-    color: #1e293b;
-    line-height: 1.6;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    top: -120px; right: -120px;
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ═══ AI²Lab brand variables ═══ */
+:root{
+    --neu-red:#C41230;
+    --neu-red-dark:#8f0c22;
+    --neu-red-light:#ff4d6d;
+    --text-primary:#1a1a2e;
+    --text-secondary:#64748b;
+    --text-muted:#94a3b8;
+    --bg-light:#fafbfc;
+    --bg-soft:#f1f5f9;
+    --card-bg:#ffffff;
+    --border-color:#e2e8f0;
+    --gold:#d4a84b;
+    --gold-dark:#a07d2a;
+    --emerald:#059669;
+    --blue:#2563EB;
+    --blue-dark:#1d4ed8;
+    --teal:#0d9488;
+    --teal-dark:#0f766e;
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md:0 8px 28px rgba(0,0,0,0.06);
+    --shadow-lg:0 20px 60px rgba(0,0,0,0.1);
+    --sidebar-w:280px;
+}
 
-  .container { max-width: 1040px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+html{scroll-behavior:smooth}
+body{
+    font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg-light);
+    color:var(--text-primary);
+    line-height:1.6;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+}
 
-  /* Header */
-  .header { text-align: center; margin-bottom: 32px; }
-  .header h1 { font-size: 1.85rem; font-weight: 700; color: #1e293b; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .header .subtitle { font-size: 0.88rem; font-weight: 400; color: #64748b; margin-bottom: 4px; }
-  .header .instructor { font-size: 0.85rem; font-weight: 500; color: #475569; margin-bottom: 12px; }
-  .header .badge-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-  .badge {
-    display: inline-block; padding: 4px 14px; border-radius: 20px;
-    font-size: 0.75rem; font-weight: 600;
-    background: rgba(37,99,235,0.08); color: #2563EB;
-    border: 1px solid rgba(37,99,235,0.15);
-  }
+/* Soft orbs */
+body::before{
+    content:'';
+    position:fixed;
+    top:40%;
+    right:-200px;
+    width:560px;height:560px;
+    background:radial-gradient(circle,rgba(37,99,235,0.05) 0%,transparent 70%);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+}
+body::after{
+    content:'';
+    position:fixed;
+    bottom:-180px;
+    left:-120px;
+    width:480px;height:480px;
+    background:radial-gradient(circle,rgba(13,148,136,0.05) 0%,transparent 70%);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+}
 
-  /* Glass card */
-  .glass {
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(148,163,184,0.25);
-    border-radius: 14px;
-    padding: 24px;
-  }
+/* ═══ Sticky header ═══ */
+header{
+    background:linear-gradient(135deg,rgba(255,255,255,0.95) 0%,rgba(250,251,252,0.92) 100%);
+    backdrop-filter:blur(20px) saturate(1.4);
+    -webkit-backdrop-filter:blur(20px) saturate(1.4);
+    border-bottom:1px solid rgba(255,255,255,0.8);
+    box-shadow:0 2px 24px rgba(0,0,0,0.05);
+    padding:14px 0;
+    position:sticky;top:0;z-index:1000;
+}
+.header-container{
+    max-width:1400px;
+    margin:0 auto;
+    padding:0 30px;
+    display:flex;justify-content:space-between;align-items:center;gap:18px;
+}
+.logo-section{display:flex;align-items:center;gap:14px}
+.ai2-logo-wrap{display:flex;flex-direction:column;align-items:center;text-decoration:none;transition:all .25s ease}
+.ai2-logo-wrap:hover{transform:translateY(-1px)}
+.ai2-logo{
+    display:inline-flex;align-items:center;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(0,0,0,0.08);
+    border-radius:50px;
+    padding:6px 12px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.05),0 1px 2px rgba(0,0,0,0.03);
+}
+.ai2-logo .bracket{font-family:'JetBrains Mono',monospace;font-size:16px;color:#ddd;font-weight:300}
+.ai2-logo .text{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:#1a1a2e;padding:0 3px}
+.ai2-logo .text sup{font-size:7px;color:var(--neu-red)}
+.ai2-logo-line{height:2px;width:40px;background:linear-gradient(90deg,var(--neu-red),#1a1a2e);border-radius:2px;margin-top:4px}
+.course-tag{font-size:0.78rem;color:var(--text-secondary);font-weight:500;letter-spacing:.04em}
+.sidebar-toggle{
+    display:none;
+    background:rgba(255,255,255,0.85);
+    border:1px solid var(--border-color);
+    border-radius:10px;
+    width:40px;height:40px;
+    align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text-primary);
+}
+.sidebar-toggle svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+.back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:0.85rem;font-weight:600;
+    color:var(--neu-red);text-decoration:none;
+    padding:8px 16px;border-radius:99px;
+    background:rgba(196,18,48,0.06);
+    border:1px solid rgba(196,18,48,0.15);
+    transition:all .25s ease;
+}
+.back-link:hover{background:rgba(196,18,48,0.12);transform:translateX(-2px)}
+.back-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
 
-  .description { margin-bottom: 28px; font-size: 0.9rem; color: #475569; font-weight: 400; line-height: 1.7; }
+/* ═══ Main layout ═══ */
+.page-wrap{
+    display:grid;
+    grid-template-columns:var(--sidebar-w) 1fr;
+    max-width:1400px;
+    margin:0 auto;
+    gap:0;
+    position:relative;z-index:1;
+}
 
-  .section-label {
-    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 10px;
-  }
+/* ═══ Sidebar ═══ */
+.sidebar{
+    position:sticky;top:72px;
+    height:calc(100vh - 72px);
+    padding:28px 20px 28px 30px;
+    overflow-y:auto;
+    border-right:1px solid var(--border-color);
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(18px);
+}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(148,163,184,0.3);border-radius:3px}
 
-  /* Info bar */
-  .info-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-  .info-item {
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148,163,184,0.25);
-    border-radius: 12px;
-    padding: 14px; text-align: center;
-  }
-  .info-item .info-label {
-    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 3px;
-  }
-  .info-item .info-value { font-size: 0.85rem; font-weight: 600; color: #1e293b; }
+.sb-title{
+    font-size:0.68rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:0.12em;color:var(--text-muted);
+    margin-bottom:14px;padding:0 8px;
+}
+.sb-group{margin-bottom:14px}
+.sb-group-header{
+    display:flex;align-items:center;gap:8px;
+    width:100%;padding:10px 12px;
+    border:none;background:transparent;border-radius:10px;
+    cursor:pointer;font-family:inherit;
+    font-size:0.82rem;font-weight:700;
+    color:var(--text-primary);text-align:left;
+    transition:background .2s ease;
+    text-transform:uppercase;letter-spacing:0.05em;
+}
+.sb-group-header:hover{background:rgba(37,99,235,0.05)}
+.sb-group-header .sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-group.session1 .sb-dot{background:var(--blue)}
+.sb-group.session2 .sb-dot{background:var(--teal)}
+.sb-group.session3 .sb-dot{background:var(--text-muted)}
+.sb-group-header .sb-count{
+    margin-left:auto;font-size:0.68rem;font-weight:600;
+    color:var(--text-muted);background:rgba(148,163,184,0.12);
+    padding:2px 8px;border-radius:99px;
+    text-transform:none;letter-spacing:0;
+}
+.sb-group-header .sb-chevron{
+    width:14px;height:14px;
+    stroke:var(--text-muted);fill:none;stroke-width:2.5;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:transform .25s ease;margin-left:4px;
+}
+.sb-group.collapsed .sb-chevron{transform:rotate(-90deg)}
+.sb-group.collapsed .sb-items{display:none}
+.sb-items{
+    margin-top:4px;padding-left:12px;
+    border-left:1.5px dashed rgba(148,163,184,0.25);
+    margin-left:16px;
+}
+.sb-item{
+    display:flex;align-items:flex-start;gap:8px;
+    padding:6px 10px;font-size:0.78rem;
+    color:var(--text-secondary);text-decoration:none;
+    border-radius:8px;transition:all .2s ease;
+    margin-bottom:1px;line-height:1.35;cursor:pointer;
+}
+.sb-item:hover{background:rgba(37,99,235,0.06);color:var(--text-primary)}
+.sb-item.active{background:rgba(37,99,235,0.09);color:var(--blue);font-weight:600}
+.sb-item .sb-num{
+    flex-shrink:0;min-width:28px;
+    padding:1px 6px;border-radius:5px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:0.6rem;font-weight:800;
+    background:rgba(37,99,235,0.08);color:var(--blue);
+    font-family:'JetBrains Mono',monospace;
+    margin-top:1px;
+}
+.sb-group.session2 .sb-item .sb-num{background:rgba(13,148,136,0.1);color:var(--teal-dark)}
+.sb-group.session3 .sb-item{opacity:0.5;pointer-events:none}
+.sb-group.session3 .sb-item .sb-num{background:rgba(148,163,184,0.12);color:var(--text-muted)}
+.sb-item .sb-label{flex:1;min-width:0}
+.sb-item.sb-done .sb-label{text-decoration:line-through;opacity:0.65}
 
-  /* Downloads section */
-  .dl-section { margin-bottom: 28px; }
-  .dl-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .dl-card {
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148,163,184,0.25);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex; gap: 12px; align-items: center;
-    text-decoration: none; color: inherit;
-    transition: all 0.2s;
-  }
-  .dl-card:hover {
-    border-color: rgba(37,99,235,0.3);
-    box-shadow: 0 2px 12px rgba(37,99,235,0.08);
-    transform: translateY(-1px);
-  }
-  .dl-icon {
-    width: 36px; height: 36px;
-    background: rgba(37,99,235,0.08);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .dl-icon svg { width: 18px; height: 18px; stroke: #2563EB; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .dl-info { flex: 1; min-width: 0; }
-  .dl-title { font-size: 0.85rem; font-weight: 600; color: #1e293b; margin-bottom: 2px; }
-  .dl-meta { font-size: 0.7rem; color: #94a3b8; }
+/* ═══ Content ═══ */
+.content{padding:48px 40px 80px;max-width:980px}
 
-  /* Progress bar */
-  .progress-bar {
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148,163,184,0.25);
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 28px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .progress-label { font-size: 0.78rem; font-weight: 600; color: #475569; flex-shrink: 0; }
-  .progress-track {
-    flex: 1; height: 8px;
-    background: rgba(148,163,184,0.2);
-    border-radius: 4px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #2563EB 0%, #3b82f6 100%);
-    width: 0%;
-    transition: width 0.4s ease;
-  }
-  .progress-count { font-size: 0.78rem; font-weight: 700; color: #2563EB; flex-shrink: 0; min-width: 60px; text-align: right; }
-  .progress-reset {
-    font-size: 0.7rem; font-weight: 500; color: #94a3b8;
-    background: none; border: none; cursor: pointer; padding: 4px 8px;
-  }
-  .progress-reset:hover { color: #ef4444; }
+/* Hero */
+.hero{text-align:center;margin-bottom:36px}
+.hero .eyebrow{
+    display:inline-block;font-size:0.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:0.18em;
+    color:var(--blue);
+    background:rgba(37,99,235,0.08);
+    padding:6px 16px;border-radius:99px;
+    border:1px solid rgba(37,99,235,0.2);
+    margin-bottom:14px;backdrop-filter:blur(8px);
+}
+.hero h1{
+    font-size:3rem;font-weight:800;
+    color:var(--text-primary);
+    letter-spacing:-0.025em;line-height:1.08;
+    margin-bottom:14px;
+}
+.hero h1 .accent{
+    background:linear-gradient(135deg,var(--blue),#3b82f6);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+.hero .tagline{
+    font-size:1.05rem;font-weight:400;
+    color:var(--text-secondary);
+    max-width:680px;margin:0 auto;line-height:1.6;
+}
+.hero .instructor{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:16px;padding:8px 18px;border-radius:99px;
+    background:rgba(255,255,255,0.9);
+    border:1px solid var(--border-color);
+    font-size:0.85rem;font-weight:600;
+    color:var(--text-primary);box-shadow:var(--shadow-sm);
+    backdrop-filter:blur(10px);
+}
+.hero .instructor svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:2}
 
-  /* Phase header */
-  .phase-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 16px;
-    margin-top: 20px; margin-bottom: 4px;
-    border-radius: 10px;
-    font-size: 0.88rem; font-weight: 700;
-    color: #1e293b;
-  }
-  .phase-header:first-of-type { margin-top: 0; }
-  .phase-header .phase-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .phase-header .phase-count { font-size: 0.72rem; font-weight: 500; color: #94a3b8; margin-left: auto; }
+/* Stat cards */
+.stats-row{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:14px;margin-bottom:36px;
+}
+.stat-card{
+    position:relative;background:var(--card-bg);
+    border:1px solid var(--border-color);border-radius:18px;
+    padding:22px 20px;box-shadow:var(--shadow-sm);
+    transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease;
+    overflow:hidden;
+}
+.stat-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--blue),var(--teal));
+    opacity:0.7;
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(37,99,235,0.1)}
+.stat-card .stat-icon{
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(13,148,136,0.04));
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:10px;
+}
+.stat-card .stat-icon svg{width:18px;height:18px;stroke:var(--blue);fill:none;stroke-width:2.2}
+.stat-card:nth-child(2) .stat-icon svg{stroke:var(--teal-dark)}
+.stat-card:nth-child(3) .stat-icon svg{stroke:var(--blue)}
+.stat-card:nth-child(4) .stat-icon svg{stroke:var(--emerald)}
+.stat-card .stat-value{
+    font-size:1.85rem;font-weight:800;
+    color:var(--text-primary);
+    letter-spacing:-0.02em;line-height:1;
+    margin-bottom:4px;
+    font-variant-numeric:tabular-nums;
+    display:flex;align-items:baseline;gap:4px;
+}
+.stat-card .stat-value .total{font-size:0.95rem;color:var(--text-muted);font-weight:600}
+.stat-card .stat-label{
+    font-size:0.72rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.07em;color:var(--text-muted);
+}
 
-  .phase-header--s1l1 { background: rgba(37,99,235,0.07); border-left: 3px solid #2563EB; }
-  .phase-header--s1l1 .phase-dot { background: #2563EB; }
-  .phase-header--s1l2 { background: rgba(16,185,129,0.07); border-left: 3px solid #10b981; }
-  .phase-header--s1l2 .phase-dot { background: #10b981; }
-  .phase-header--s2 { background: rgba(245,158,11,0.06); border-left: 3px solid #f59e0b; }
-  .phase-header--s2 .phase-dot { background: #f59e0b; }
-  .phase-header--s3 { background: rgba(139,92,246,0.06); border-left: 3px solid #8b5cf6; }
-  .phase-header--s3 .phase-dot { background: #8b5cf6; }
+/* Modules (session cards) */
+.modules-section{margin-bottom:36px}
+.section-label{
+    font-size:0.7rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:0.12em;color:var(--text-muted);
+    margin-bottom:16px;margin-left:4px;
+}
+.phase-header{
+    display:flex;align-items:center;gap:12px;
+    padding:11px 18px;margin-top:20px;margin-bottom:8px;
+    border-radius:10px;font-size:0.85rem;font-weight:800;
+    color:var(--text-primary);
+    text-transform:uppercase;letter-spacing:0.06em;
+}
+.phase-header:first-child{margin-top:0}
+.phase-header .phase-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.phase-header .phase-count{
+    font-size:0.72rem;font-weight:600;
+    color:var(--text-muted);margin-left:auto;
+    text-transform:none;letter-spacing:0;
+}
+.phase-header.session1{
+    background:linear-gradient(135deg,rgba(37,99,235,0.07),rgba(37,99,235,0.02));
+    border-left:3px solid var(--blue);
+}
+.phase-header.session1 .phase-dot{background:var(--blue)}
+.phase-header.session2{
+    background:linear-gradient(135deg,rgba(13,148,136,0.08),rgba(13,148,136,0.02));
+    border-left:3px solid var(--teal);
+}
+.phase-header.session2 .phase-dot{background:var(--teal)}
+.phase-header.session3{
+    background:linear-gradient(135deg,rgba(148,163,184,0.08),rgba(148,163,184,0.02));
+    border-left:3px solid var(--text-muted);
+}
+.phase-header.session3 .phase-dot{background:var(--text-muted)}
 
-  /* Task row */
-  .task-row {
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148,163,184,0.25);
-    border-radius: 10px;
-    margin-bottom: 5px;
-    transition: box-shadow 0.2s;
-    overflow: hidden;
-    position: relative;
-  }
-  .task-row:hover { box-shadow: 0 2px 12px rgba(37,99,235,0.06); }
-  .task-row.expanded { box-shadow: 0 2px 16px rgba(37,99,235,0.1); }
+.mod-row{
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:14px;margin-bottom:10px;
+    transition:box-shadow .25s ease,transform .25s ease;
+    overflow:visible;
+    box-shadow:var(--shadow-sm);
+    position:relative;
+}
+.mod-row:hover{box-shadow:0 6px 22px rgba(37,99,235,0.08);transform:translateY(-1px)}
+.mod-row.expanded{box-shadow:0 8px 28px rgba(37,99,235,0.10)}
+.mod-header{
+    display:flex;align-items:center;gap:14px;
+    padding:18px 22px;cursor:pointer;user-select:none;position:relative;
+}
+.mod-border{
+    position:absolute;left:0;top:0;bottom:0;
+    width:5px;border-radius:14px 0 0 14px;
+}
+.mod-border.session1{background:linear-gradient(180deg,var(--blue),#3b82f6)}
+.mod-border.session2{background:linear-gradient(180deg,var(--teal),#14b8a6)}
+.mod-border.session3{background:linear-gradient(180deg,var(--text-muted),#94a3b8)}
+.mod-num{
+    font-size:0.78rem;font-weight:800;color:var(--blue);
+    font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;
+    min-width:38px;flex-shrink:0;padding-left:10px;
+}
+.mod-row.session2 .mod-num{color:var(--teal-dark)}
+.mod-row.session3 .mod-num{color:var(--text-muted)}
+.mod-title{
+    font-size:1.05rem;font-weight:700;
+    color:var(--text-primary);flex:1;letter-spacing:-0.01em;
+}
+.mod-title .mod-sub{
+    display:block;font-size:0.78rem;
+    color:var(--text-secondary);font-weight:500;
+    margin-top:2px;letter-spacing:0;
+}
+.status-badge{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:5px 13px;border-radius:99px;
+    font-size:0.7rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:0.06em;
+    flex-shrink:0;
+}
+.status-badge.ready{
+    background:rgba(5,150,105,0.1);color:var(--emerald);
+    border:1px solid rgba(5,150,105,0.25);
+}
+.status-badge.stub{
+    background:rgba(148,163,184,0.12);color:var(--text-muted);
+    border:1px solid rgba(148,163,184,0.25);
+}
+.status-badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.mod-chevron{
+    flex-shrink:0;width:24px;height:24px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-muted);transition:transform .3s ease;
+}
+.mod-chevron svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.mod-row.expanded .mod-chevron{transform:rotate(90deg);color:var(--blue)}
+.mod-row.session2.expanded .mod-chevron{color:var(--teal-dark)}
+.mod-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.mod-row.expanded .mod-body{max-height:5000px}
+.mod-body-inner{padding:0 22px 22px 70px}
+.mod-intro{
+    padding:16px 20px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(37,99,235,0.04),rgba(255,255,255,0.6));
+    border:1px solid rgba(37,99,235,0.10);
+    border-left:3px solid var(--blue);
+    margin-bottom:16px;
+    font-size:0.92rem;color:var(--text-primary);line-height:1.65;
+}
+.mod-row.session2 .mod-intro{
+    background:linear-gradient(135deg,rgba(13,148,136,0.05),rgba(255,255,255,0.6));
+    border-color:rgba(13,148,136,0.18);
+    border-left-color:var(--teal);
+}
+.mod-row.session3 .mod-intro{
+    background:linear-gradient(135deg,rgba(148,163,184,0.08),rgba(255,255,255,0.6));
+    border-color:rgba(148,163,184,0.25);
+    border-left-color:var(--text-muted);
+}
+.mod-intro strong{color:var(--blue);font-weight:700}
+.mod-row.session2 .mod-intro strong{color:var(--teal-dark)}
 
-  .task-border {
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 4px;
-  }
-  .task-row--s1l1 .task-border { background: #2563EB; }
-  .task-row--s1l2 .task-border { background: #10b981; }
-  .task-row--s2 .task-border { background: #f59e0b; }
-  .task-row--s3 .task-border { background: #8b5cf6; }
+/* Data download section */
+.data-section{margin-bottom:18px}
+.data-label{
+    font-size:0.64rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:0.1em;color:var(--text-muted);
+    margin-bottom:8px;
+}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.data-card{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px;background:var(--bg-soft);
+    border:1px solid var(--border-color);border-radius:10px;
+    text-decoration:none;color:inherit;
+    transition:all .2s ease;
+}
+.data-card:hover{
+    background:rgba(37,99,235,0.05);
+    border-color:rgba(37,99,235,0.25);
+    transform:translateX(2px);
+}
+.mod-row.session2 .data-card:hover{
+    background:rgba(13,148,136,0.05);
+    border-color:rgba(13,148,136,0.25);
+}
+.data-icon{
+    width:28px;height:28px;flex-shrink:0;
+    border-radius:7px;
+    background:rgba(37,99,235,0.08);
+    display:flex;align-items:center;justify-content:center;
+}
+.data-icon svg{width:13px;height:13px;stroke:var(--blue);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mod-row.session2 .data-icon{background:rgba(13,148,136,0.08)}
+.mod-row.session2 .data-icon svg{stroke:var(--teal-dark)}
+.data-info{flex:1;min-width:0}
+.data-title{font-size:0.78rem;font-weight:700;color:var(--text-primary);line-height:1.3}
+.data-meta{font-size:0.66rem;color:var(--text-muted);font-weight:500;margin-top:1px}
 
-  .task-row.done { background: rgba(16,185,129,0.05); }
-  .task-row.done .task-title { color: #64748b; text-decoration: line-through; text-decoration-color: rgba(100,116,139,0.4); }
+/* Compact task list */
+.task-label-row{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:8px;
+}
+.task-progress{
+    font-size:0.66rem;font-weight:700;
+    color:var(--blue);
+    background:rgba(37,99,235,0.08);
+    padding:3px 10px;border-radius:99px;
+    border:1px solid rgba(37,99,235,0.15);
+}
+.mod-row.session2 .task-progress{
+    color:var(--teal-dark);
+    background:rgba(13,148,136,0.08);
+    border-color:rgba(13,148,136,0.18);
+}
+.task-list{
+    border:1px solid var(--border-color);
+    border-radius:10px;overflow:hidden;
+    background:#fff;
+}
+.task-item{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:13px 16px;
+    border-bottom:1px solid var(--border-color);
+    cursor:pointer;
+    transition:background .15s ease;
+    position:relative;
+}
+.task-item:last-child{border-bottom:none}
+.task-item:hover{background:rgba(37,99,235,0.03)}
+.mod-row.session2 .task-item:hover{background:rgba(13,148,136,0.03)}
+.task-check{
+    width:15px;height:15px;
+    border:1.8px solid #cbd5e1;
+    border-radius:4px;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    background:white;
+    transition:all .15s ease;
+    margin-top:2px;
+}
+.task-check:hover{border-color:var(--blue)}
+.task-item.done .task-check{
+    background:var(--emerald);
+    border-color:var(--emerald);
+}
+.task-item.done .task-check::after{
+    content:'';
+    width:4px;height:7px;
+    border:solid white;border-width:0 2px 2px 0;
+    transform:rotate(45deg) translate(-0.5px,-1px);
+}
+.task-num-inline{
+    flex-shrink:0;
+    font-size:0.68rem;font-weight:800;
+    color:var(--blue);
+    font-family:'JetBrains Mono',monospace;
+    min-width:32px;
+    height:22px;
+    padding:0 7px;
+    border-radius:6px;
+    background:rgba(37,99,235,0.08);
+    border:1px solid rgba(37,99,235,0.15);
+    display:inline-flex;align-items:center;justify-content:center;
+    margin-top:1px;
+}
+.mod-row.session2 .task-num-inline{
+    background:rgba(13,148,136,0.08);
+    border-color:rgba(13,148,136,0.2);
+}
+.mod-row.session2 .task-num-inline{color:var(--teal-dark)}
+.task-row-main{
+    flex:1;min-width:0;
+    padding-top:1px;
+}
+.task-row-title{
+    font-size:0.92rem;font-weight:600;
+    color:var(--text-primary);
+    line-height:1.4;
+}
+.task-item.done .task-row-title{
+    color:var(--text-muted);
+    text-decoration:line-through;
+    text-decoration-color:rgba(148,163,184,0.5);
+}
+.task-chip{
+    display:inline-block;
+    font-size:0.58rem;font-weight:700;
+    padding:1px 6px;border-radius:4px;
+    margin-left:6px;
+    vertical-align:middle;
+    text-transform:uppercase;letter-spacing:0.04em;
+}
+.task-chip-plot{background:rgba(5,150,105,0.1);color:var(--emerald);border:1px solid rgba(5,150,105,0.2)}
+.task-chip-quiz{background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.2)}
+.task-chip-file{background:rgba(139,92,246,0.1);color:#7c3aed;border:1px solid rgba(139,92,246,0.2)}
+.task-expand{
+    flex-shrink:0;width:16px;height:16px;
+    color:var(--text-muted);
+    transition:transform .2s ease;
+    margin-top:3px;
+}
+.task-expand svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.task-item.open .task-expand{transform:rotate(90deg)}
+.task-details{
+    display:none;
+    padding:0 14px 12px 51px;
+    background:rgba(248,250,252,0.5);
+    border-bottom:1px solid var(--border-color);
+    font-size:0.78rem;color:var(--text-secondary);
+    line-height:1.6;
+}
+.task-item.open + .task-details{display:block}
+.task-details-desc{margin-bottom:8px;white-space:pre-wrap}
+.task-details-spec{
+    background:rgba(37,99,235,0.04);
+    border-left:2.5px solid var(--blue);
+    padding:8px 12px;border-radius:5px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;color:#334155;
+    margin:8px 0;white-space:pre-wrap;
+}
+.mod-row.session2 .task-details-spec{
+    background:rgba(13,148,136,0.04);
+    border-left-color:var(--teal);
+}
+.task-details-quiz{
+    background:rgba(245,158,11,0.06);
+    border-left:2.5px solid #f59e0b;
+    padding:8px 12px;border-radius:5px;
+    font-size:0.74rem;color:#78350f;
+    margin-top:8px;
+}
+.task-details-quiz::before{
+    content:'QUIZ · ';
+    font-weight:800;font-size:0.64rem;
+    color:#d97706;letter-spacing:0.05em;
+}
 
-  .task-header {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 16px 12px 22px;
-    cursor: pointer; user-select: none;
-  }
+/* ═══ Tableau shelf mockup ═══ */
+.tab-shelf{
+    background:#f9fafb;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    overflow:hidden;
+    margin:10px 0;
+    font-family:'Outfit',sans-serif;
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.tab-shelf-title{
+    background:linear-gradient(180deg,#e5e7eb,#d1d5db);
+    padding:6px 12px;
+    font-size:0.68rem;font-weight:700;
+    color:#374151;
+    border-bottom:1px solid #9ca3af;
+    letter-spacing:0.03em;
+    display:flex;align-items:center;gap:6px;
+}
+.tab-shelf-title::before{
+    content:'';
+    width:10px;height:10px;
+    background:#1e5fa8;
+    border-radius:2px;
+}
+.tab-shelf-body{padding:10px 12px}
+.tab-shelf-row{
+    display:flex;align-items:center;gap:8px;
+    padding:5px 0;
+    min-height:30px;
+    border-bottom:1px dashed #e5e7eb;
+}
+.tab-shelf-row:last-child{border-bottom:none}
+.tab-shelf-label{
+    flex-shrink:0;
+    font-size:0.7rem;font-weight:700;
+    color:#4b5563;
+    width:68px;
+    text-align:right;
+    letter-spacing:0.02em;
+}
+.tab-shelf-drop{
+    flex:1;
+    display:flex;align-items:center;gap:6px;
+    flex-wrap:wrap;
+    min-height:22px;
+    padding:2px 6px;
+    background:#fff;
+    border:1px dashed #d1d5db;
+    border-radius:4px;
+}
+.tab-shelf-divider{
+    margin:8px 0 6px 0;
+    border-top:1px solid #d1d5db;
+    position:relative;
+}
+.tab-shelf-marks-label{
+    position:absolute;
+    top:-9px;left:8px;
+    background:#f9fafb;
+    padding:0 8px;
+    font-size:0.66rem;font-weight:800;
+    color:#4b5563;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+}
+.tab-pill{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:3px 10px 3px 10px;
+    border-radius:99px;
+    font-size:0.72rem;font-weight:600;
+    color:#fff;
+    white-space:nowrap;
+    box-shadow:0 1px 2px rgba(0,0,0,0.08);
+    cursor:default;
+    position:relative;
+}
+.tab-pill::before{
+    content:'';
+    width:5px;height:5px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.85);
+    flex-shrink:0;
+}
+.tab-pill.dim{background:#1e5fa8}    /* discrete / dimension — blue */
+.tab-pill.meas{background:#2e8540}   /* continuous / measure — green */
+.tab-pill.calc{background:#8b5cf6}   /* calculated field — purple */
+.tab-pill.agg::before{content:'∑';background:none;width:auto;font-size:0.72rem;font-weight:700}
+.tab-pill.dim::before{content:''}
+.tab-pill.meas::before{content:''}
+.tab-marks-chip{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:2px 9px;border-radius:4px;
+    background:#e5e7eb;
+    color:#374151;
+    font-size:0.7rem;font-weight:600;
+    border:1px solid #d1d5db;
+}
+.tab-marks-chip .sw{
+    width:10px;height:10px;
+    border-radius:2px;
+    background:#6b7280;
+    flex-shrink:0;
+}
+.tab-shelf-note{
+    margin-top:6px;
+    font-size:0.7rem;color:#6b7280;
+    font-style:italic;
+    padding:4px 8px;
+    background:#fef3c7;
+    border-left:2px solid #f59e0b;
+    border-radius:3px;
+}
+.tab-legend{
+    display:flex;gap:12px;
+    margin-bottom:8px;
+    font-size:0.66rem;color:var(--text-muted);
+    font-weight:500;
+}
+.tab-legend-item{display:inline-flex;align-items:center;gap:4px}
+.tab-legend-dot{width:9px;height:9px;border-radius:50%}
+.tab-legend-dot.dim{background:#1e5fa8}
+.tab-legend-dot.meas{background:#2e8540}
 
-  .task-check {
-    width: 18px; height: 18px;
-    border: 2px solid #cbd5e1;
-    border-radius: 5px;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-    background: white;
-  }
-  .task-check:hover { border-color: #2563EB; }
-  .task-check.checked { background: #10b981; border-color: #10b981; }
-  .task-check.checked::after {
-    content: '';
-    width: 5px; height: 9px;
-    border: solid white; border-width: 0 2px 2px 0;
-    transform: rotate(45deg) translate(-1px, -1px);
-  }
+/* Stub note */
+.stub-note{
+    padding:18px 22px;
+    background:var(--bg-soft);
+    border:1px dashed var(--border-color);
+    border-radius:10px;
+    text-align:center;
+    font-size:0.82rem;color:var(--text-muted);
+}
+.stub-note strong{color:var(--text-secondary)}
 
-  .task-num {
-    font-size: 0.76rem; font-weight: 700;
-    color: #2563EB;
-    min-width: 32px; flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
-  }
-  .task-title {
-    font-size: 0.9rem; font-weight: 600;
-    color: #1e293b; flex: 1;
-  }
-  .task-chip {
-    font-size: 0.66rem; font-weight: 600;
-    padding: 2px 10px; border-radius: 12px;
-    background: rgba(37,99,235,0.08); color: #2563EB;
-    border: 1px solid rgba(37,99,235,0.15);
-    flex-shrink: 0;
-  }
-  .task-chip--quiz { background: rgba(245,158,11,0.1); color: #d97706; border-color: rgba(245,158,11,0.2); }
-  .task-chip--plot { background: rgba(16,185,129,0.1); color: #059669; border-color: rgba(16,185,129,0.2); }
-  .task-chip--file { background: rgba(139,92,246,0.1); color: #7c3aed; border-color: rgba(139,92,246,0.2); }
+/* Footer */
+.outline-footer{
+    text-align:center;margin-top:48px;padding-top:32px;
+    border-top:1px solid var(--border-color);
+    color:var(--text-muted);font-size:0.78rem;font-weight:500;
+}
+.outline-footer a{color:var(--neu-red);text-decoration:none;font-weight:600}
+.outline-footer a:hover{text-decoration:underline}
 
-  .task-chevron {
-    width: 16px; height: 16px;
-    color: #cbd5e1;
-    flex-shrink: 0;
-    transition: transform 0.2s;
-  }
-  .task-row.expanded .task-chevron { transform: rotate(90deg); }
-  .task-chevron svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-
-  .task-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
-  .task-row.expanded .task-body { max-height: 2000px; }
-  .task-body-inner {
-    padding: 0 22px 18px 22px;
-    border-top: 1px dashed rgba(148,163,184,0.25);
-    margin-top: 4px;
-    padding-top: 14px;
-  }
-  .task-desc {
-    font-size: 0.83rem; color: #475569;
-    line-height: 1.65; margin-bottom: 10px;
-    white-space: pre-wrap;
-  }
-  .task-spec {
-    background: rgba(37,99,235,0.04);
-    border-left: 3px solid #2563EB;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    color: #334155;
-    margin-bottom: 10px;
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    white-space: pre-wrap;
-  }
-  .task-quiz {
-    background: rgba(245,158,11,0.06);
-    border-left: 3px solid #f59e0b;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    color: #78350f;
-    margin-bottom: 10px;
-  }
-  .task-quiz::before {
-    content: 'QUIZ · ';
-    font-weight: 700;
-    font-size: 0.7rem;
-    color: #d97706;
-    letter-spacing: 0.05em;
-  }
-  .task-file {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 0.74rem; font-weight: 600;
-    color: #2563EB; text-decoration: none;
-    padding: 4px 10px; border-radius: 6px;
-    background: rgba(37,99,235,0.08);
-    margin-top: 6px; margin-right: 6px;
-  }
-  .task-file:hover { background: rgba(37,99,235,0.14); }
-
-  /* Stub section */
-  .stub-row {
-    background: rgba(255,255,255,0.5);
-    border: 1px dashed rgba(148,163,184,0.4);
-    border-radius: 10px;
-    padding: 20px 22px;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-  .stub-row .stub-title { font-size: 0.88rem; font-weight: 600; color: #64748b; margin-bottom: 4px; }
-  .stub-row .stub-sub { font-size: 0.76rem; color: #94a3b8; }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(148,163,184,0.2);
-    font-size: 0.75rem;
-    color: #94a3b8;
-  }
-  .footer a { color: #2563EB; text-decoration: none; font-weight: 500; }
-
-  /* Responsive */
-  @media (max-width: 720px) {
-    .info-bar { grid-template-columns: repeat(2, 1fr); }
-    .dl-grid { grid-template-columns: 1fr; }
-    .header h1 { font-size: 1.45rem; }
-    .task-title { font-size: 0.82rem; }
-    .task-chip { display: none; }
-  }
+/* Responsive */
+@media (max-width:980px){
+    .page-wrap{grid-template-columns:1fr}
+    .sidebar{
+        position:fixed;top:72px;left:-300px;
+        width:280px;height:calc(100vh - 72px);
+        z-index:998;transition:left .3s ease;
+        box-shadow:var(--shadow-lg);
+        background:rgba(255,255,255,0.98);
+    }
+    .sidebar.open{left:0}
+    .sidebar-toggle{display:flex}
+    .content{padding:32px 24px 60px}
+    .hero h1{font-size:2.1rem}
+    .stats-row{grid-template-columns:repeat(2,1fr)}
+    .mod-body-inner{padding:0 18px 18px 18px}
+}
 </style>
 </head>
 <body>
 
-<div class="container">
-
-  <!-- HEADER -->
-  <div class="header">
-    <h1>Tableau Workshop</h1>
-    <div class="subtitle">IE 5374 · Storytelling with Data</div>
-    <div class="instructor">Prof. Mohammad Dehghani · Northeastern University</div>
-    <div class="badge-row">
-      <span class="badge">Hands-on</span>
-      <span class="badge">3 Sessions</span>
-      <span class="badge">Global Superstore 2016</span>
-    </div>
-  </div>
-
-  <!-- DESCRIPTION -->
-  <div class="glass description">
-    A three-session hands-on Tableau workshop. You will build your first dashboards from raw data, explore visual analytics techniques (marks, hierarchies, parameters, sets), and learn how to tell a data story. Check off each task as you complete it &mdash; progress is saved automatically in your browser.
-  </div>
-
-  <!-- INFO BAR -->
-  <div class="info-bar">
-    <div class="info-item">
-      <div class="info-label">Tool</div>
-      <div class="info-value">Tableau Public / Desktop</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">Dataset</div>
-      <div class="info-value">Global Superstore 2016</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">Format</div>
-      <div class="info-value">Self-paced + guided</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">Sessions</div>
-      <div class="info-value">3 &times; ~90 min</div>
-    </div>
-  </div>
-
-  <!-- DATA DOWNLOADS -->
-  <div class="dl-section">
-    <div class="section-label">Data &amp; Resources</div>
-    <div class="dl-grid">
-      <a class="dl-card" href="session-1/data/Global%20Superstore%20Orders%202016.xlsx" download>
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">Global Superstore Orders 2016</div>
-          <div class="dl-meta">Excel &middot; main transactional data</div>
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header>
+    <div class="header-container">
+        <div class="logo-section">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <a href="https://www.ai2lab.ai/" class="ai2-logo-wrap">
+                <div class="ai2-logo">
+                    <span class="bracket">[</span>
+                    <span class="text">AI<sup>2</sup></span>
+                    <span class="bracket">]</span>
+                </div>
+                <div class="ai2-logo-line"></div>
+            </a>
+            <span class="course-tag">IE 5374 · Tableau Workshop</span>
         </div>
-      </a>
-      <a class="dl-card" href="session-1/data/Global%20Superstore%20Returns%202016.csv" download>
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">Global Superstore Returns 2016</div>
-          <div class="dl-meta">CSV &middot; join to Orders for Lecture 1 Task 3</div>
-        </div>
-      </a>
-      <a class="dl-card" href="session-2/data/Anscombes%20Quartet_Full%20Data.csv" download>
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">Anscombe's Quartet</div>
-          <div class="dl-meta">CSV &middot; Lecture 2 intro dataset</div>
-        </div>
-      </a>
-      <a class="dl-card" href="session-1/Tableau%20Agenda_1.xlsx" download>
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">Lecture Agenda (Session 1)</div>
-          <div class="dl-meta">Excel &middot; original TA worksheet</div>
-        </div>
-      </a>
-      <a class="dl-card" href="articles/10_best_practices_for_building_effective_dashboardswp.pdf" target="_blank">
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">10 Best Practices for Dashboards</div>
-          <div class="dl-meta">PDF &middot; Tableau whitepaper</div>
-        </div>
-      </a>
-      <a class="dl-card" href="articles/which_chart_or_graph_is_right_for_youwp_1.pdf" target="_blank">
-        <div class="dl-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="dl-info">
-          <div class="dl-title">Which Chart or Graph is Right?</div>
-          <div class="dl-meta">PDF &middot; Tableau whitepaper</div>
-        </div>
-      </a>
+        <a href="https://www.ai2lab.ai/" class="back-link">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to AI²Lab
+        </a>
     </div>
-  </div>
+</header>
 
-  <!-- PROGRESS -->
-  <div class="progress-bar">
-    <span class="progress-label">Your progress</span>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="progress-count" id="progressCount">0 / 24</span>
-    <button class="progress-reset" onclick="resetProgress()">Reset</button>
-  </div>
+<div class="page-wrap">
 
-  <!-- ======================================= -->
-  <!-- SESSION 1 · LECTURE 1 -->
-  <!-- ======================================= -->
-  <div class="phase-header phase-header--s1l1">
-    <span class="phase-dot"></span>
-    Session 1 &middot; Lecture 1: Getting Started with Tableau
-    <span class="phase-count">14 tasks</span>
-  </div>
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sb-title">Workshop Navigation</div>
 
-  <!-- Tasks are generated by JS below -->
-  <div id="s1l1-tasks"></div>
+        <div class="sb-group session1" id="sbg-1">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-1')">
+                <span class="sb-dot"></span>
+                <span>Session 1 · L1</span>
+                <span class="sb-count">14</span>
+                <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sb-items" id="sbg-1-items"></div>
+        </div>
 
-  <!-- ======================================= -->
-  <!-- SESSION 1 · LECTURE 2 -->
-  <!-- ======================================= -->
-  <div class="phase-header phase-header--s1l2">
-    <span class="phase-dot"></span>
-    Session 1 &middot; Lecture 2: Visual Analytics
-    <span class="phase-count">10 tasks</span>
-  </div>
+        <div class="sb-group session2" id="sbg-2">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-2')">
+                <span class="sb-dot"></span>
+                <span>Session 1 · L2</span>
+                <span class="sb-count">10</span>
+                <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sb-items" id="sbg-2-items"></div>
+        </div>
 
-  <div id="s1l2-tasks"></div>
+        <div class="sb-group session3 collapsed" id="sbg-3">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-3')">
+                <span class="sb-dot"></span>
+                <span>Sessions 2 &amp; 3</span>
+                <span class="sb-count">soon</span>
+                <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sb-items">
+                <div class="sb-item"><span class="sb-num">S2</span><span class="sb-label">TBD — Advanced</span></div>
+                <div class="sb-item"><span class="sb-num">S3</span><span class="sb-label">TBD — Healthcare</span></div>
+            </div>
+        </div>
+    </aside>
 
-  <!-- ======================================= -->
-  <!-- SESSION 2 STUB -->
-  <!-- ======================================= -->
-  <div class="phase-header phase-header--s2">
-    <span class="phase-dot"></span>
-    Session 2: Coming soon
-    <span class="phase-count">stub</span>
-  </div>
-  <div class="stub-row">
-    <div class="stub-title">Session 2 agenda will be posted here</div>
-    <div class="stub-sub">Content: Drill-down, Hierarchies, Parameters, Grouping &middot; Tableau files available in <code>session-2/tableau-files/</code></div>
-  </div>
+    <!-- ═══════════════ CONTENT ═══════════════ -->
+    <main class="content">
 
-  <!-- ======================================= -->
-  <!-- SESSION 3 STUB -->
-  <!-- ======================================= -->
-  <div class="phase-header phase-header--s3">
-    <span class="phase-dot"></span>
-    Session 3: Coming soon
-    <span class="phase-count">stub</span>
-  </div>
-  <div class="stub-row">
-    <div class="stub-title">Session 3 agenda will be posted here</div>
-    <div class="stub-sub">Source file: <code>session-3/Tableau Agenda-3.xlsx</code></div>
-  </div>
+        <!-- Hero -->
+        <div class="hero">
+            <div class="eyebrow">Northeastern University · IE 5374</div>
+            <h1>Tableau <span class="accent">Workshop</span></h1>
+            <p class="tagline">Hands-on Tableau for Storytelling with Data. Build real dashboards from the Global Superstore dataset, then explore visual analytics — marks, hierarchies, parameters, sets, and calculated fields.</p>
+            <div class="instructor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Prof. Mohammad Dehghani
+            </div>
+        </div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    IE 5374 Tableau Workshop &middot; Prof. Mohammad Dehghani &middot;
-    <a href="https://github.com/mdehghani86/tableau-workshop" target="_blank">GitHub</a>
-  </div>
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                <div class="stat-value">3<span class="total">&nbsp;sessions</span></div>
+                <div class="stat-label">Workshop</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                <div class="stat-value"><span id="statDone">0</span><span class="total">&nbsp;/&nbsp;24</span></div>
+                <div class="stat-label">Tasks done</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                <div class="stat-value">3<span class="total">&nbsp;datasets</span></div>
+                <div class="stat-label">Downloads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 2 5-7"/></svg></div>
+                <div class="stat-value">6<span class="total">&nbsp;plots</span></div>
+                <div class="stat-label">Dashboards</div>
+            </div>
+        </div>
 
+        <!-- ═══════════════ MODULES ═══════════════ -->
+        <div class="modules-section">
+            <div class="section-label">Session Outline</div>
+
+            <!-- ═══ SESSION 1 · LECTURE 1 ═══ -->
+            <div class="phase-header session1">
+                <div class="phase-dot"></div>
+                <span>Session 1</span>
+                <span class="phase-count">2 lectures · 24 tasks</span>
+            </div>
+
+            <div class="mod-row session1 expanded" id="m1">
+                <div class="mod-header" onclick="toggleMod('m1')">
+                    <div class="mod-border session1"></div>
+                    <span class="mod-num">L1</span>
+                    <span class="mod-title">
+                        Getting Started with Tableau
+                        <span class="mod-sub">Load data, plot types, maps, crosstabs, calculations</span>
+                    </span>
+                    <span class="status-badge ready"><span class="dot"></span>Ready</span>
+                    <div class="mod-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                </div>
+                <div class="mod-body">
+                    <div class="mod-body-inner">
+                        <div class="mod-intro">
+                            Your first hands-on session with Tableau. Connect to the <strong>Global Superstore 2016</strong> dataset, learn the difference between dimensions and measures, and build six plots covering seasonality, crosstabs, maps, hierarchies, and trendlines.
+                        </div>
+
+                        <div class="data-section">
+                            <div class="data-label">Download data for this lecture</div>
+                            <div class="data-grid">
+                                <a class="data-card" href="session-1/data/Global%20Superstore%20Orders%202016.xlsx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Orders 2016</div><div class="data-meta">XLSX · main data</div></div>
+                                </a>
+                                <a class="data-card" href="session-1/data/Global%20Superstore%20Returns%202016.csv" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Returns 2016</div><div class="data-meta">CSV · join for T3</div></div>
+                                </a>
+                                <a class="data-card" href="session-1/Tableau%20Agenda_1.xlsx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Agenda (original)</div><div class="data-meta">XLSX · TA worksheet</div></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="task-label-row">
+                            <div class="data-label" style="margin:0">Tasks</div>
+                            <span class="task-progress" id="s1-progress">0 / 14</span>
+                        </div>
+                        <div class="task-list" id="s1-tasks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ SESSION 1 · LECTURE 2 ═══ -->
+            <div class="phase-header session2">
+                <div class="phase-dot"></div>
+                <span>Session 1 · Lecture 2</span>
+                <span class="phase-count">1 lecture · 10 tasks</span>
+            </div>
+
+            <div class="mod-row session2 expanded" id="m2">
+                <div class="mod-header" onclick="toggleMod('m2')">
+                    <div class="mod-border session2"></div>
+                    <span class="mod-num">L2</span>
+                    <span class="mod-title">
+                        Visual Analytics
+                        <span class="mod-sub">Marks, highlights, drill-down, hierarchies, parameters, sets</span>
+                    </span>
+                    <span class="status-badge ready"><span class="dot"></span>Ready</span>
+                    <div class="mod-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                </div>
+                <div class="mod-body">
+                    <div class="mod-body-inner">
+                        <div class="mod-intro">
+                            Visual Analytics is the process of gaining knowledge from data through interactive visuals. Starting with <strong>Anscombe's Quartet</strong> (four datasets with identical statistics but wildly different shapes), you'll work with marks, build views, drill into details, create hierarchies, and use parameters + sets to make filters dynamic.
+                        </div>
+
+                        <div class="data-section">
+                            <div class="data-label">Download data + workbooks</div>
+                            <div class="data-grid">
+                                <a class="data-card" href="session-2/data/Anscombes%20Quartet_Full%20Data.csv" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Anscombe's Quartet</div><div class="data-meta">CSV · intro dataset</div></div>
+                                </a>
+                                <a class="data-card" href="session-2/tableau-files/1-%20getting_started_in_visual_analytics.twbx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Getting Started</div><div class="data-meta">TWBX · T2, T3, T4</div></div>
+                                </a>
+                                <a class="data-card" href="session-2/tableau-files/2-%20drill_down_and_hierarchies.twbx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Drill Down &amp; Hierarchies</div><div class="data-meta">TWBX · T5, T6, T7</div></div>
+                                </a>
+                                <a class="data-card" href="session-2/tableau-files/3-%20parameters.twbx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Parameters</div><div class="data-meta">TWBX · T8, T9, T10</div></div>
+                                </a>
+                                <a class="data-card" href="session-2/tableau-files/4-%20grouping.twbx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Grouping (bonus)</div><div class="data-meta">TWBX · extra</div></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="task-label-row">
+                            <div class="data-label" style="margin:0">Tasks</div>
+                            <span class="task-progress" id="s2-progress">0 / 10</span>
+                        </div>
+                        <div class="task-list" id="s2-tasks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ SESSION 2 & 3 STUB ═══ -->
+            <div class="phase-header session3">
+                <div class="phase-dot"></div>
+                <span>Coming Soon</span>
+                <span class="phase-count">Sessions 2 &amp; 3</span>
+            </div>
+
+            <div class="mod-row session3" id="m3">
+                <div class="mod-header" onclick="toggleMod('m3')">
+                    <div class="mod-border session3"></div>
+                    <span class="mod-num">S3</span>
+                    <span class="mod-title">
+                        Healthcare Analytics (preview)
+                        <span class="mod-sub">Emergency Department dataset — agenda to be published</span>
+                    </span>
+                    <span class="status-badge stub"><span class="dot"></span>Stub</span>
+                    <div class="mod-chevron">
+                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                </div>
+                <div class="mod-body">
+                    <div class="mod-body-inner">
+                        <div class="mod-intro">
+                            Session 3 will apply everything from Sessions 1 and 2 to a <strong>healthcare dataset</strong>. You'll explore Emergency Department arrivals, wait times, and capacity patterns. Tasks will be posted closer to the workshop date.
+                        </div>
+                        <div class="data-section">
+                            <div class="data-label">Preview data</div>
+                            <div class="data-grid">
+                                <a class="data-card" href="session-3/data/Emergency_Department.xlsx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Emergency Department</div><div class="data-meta">XLSX · Session 3 preview</div></div>
+                                </a>
+                                <a class="data-card" href="session-3/Tableau%20Agenda-3.xlsx" download>
+                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                                    <div class="data-info"><div class="data-title">Agenda (draft)</div><div class="data-meta">XLSX · preview</div></div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="stub-note">
+                            <strong>Full task list for Session 3 coming soon.</strong><br>
+                            Agenda under development.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:20px">
+            <button onclick="resetProgress()" style="font-size:0.74rem;color:var(--text-muted);background:none;border:1px solid var(--border-color);padding:8px 16px;border-radius:99px;cursor:pointer;font-family:inherit">Reset all progress</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="outline-footer">
+            <div>IE 5374 · Tableau Workshop · Northeastern University</div>
+            <div style="margin-top:6px">Part of <a href="https://www.ai2lab.ai/">AI²Lab.ai</a> · Maintained by Prof. Mohammad Dehghani · <a href="https://github.com/mdehghani86/tableau-workshop">GitHub</a></div>
+        </div>
+
+    </main>
 </div>
 
 <script>
@@ -488,161 +1045,257 @@
 // TASK DATA
 // ============================================
 const TASKS = {
-  s1l1: [
-    { n: 1, t: "Tableau Welcome Page", desc: "Open Tableau and explore the welcome page &mdash; Connect panel, recent workbooks, discover pane." },
-    { n: 2, t: "Load data from Excel", desc: "Connect to the Global Superstore Orders 2016 Excel file. Drag the Orders sheet to the canvas.", chip: "file", chipText: "xlsx" },
-    { n: 3, t: "Split Order ID", desc: "Add the Returns CSV and join it from the left.\n\nSteps:\n> Change 'Row ID' type to String\n> Split 'Order ID': each code is \"DC-year-other\". Keep only the DC code." },
-    { n: 4, t: "Connection Type", desc: "Understand the difference between Data Extracts and Live Connections. When to use each." },
-    { n: 5, t: "Plot 1 &mdash; Dive into data (Sales Quantity)", chip: "plot",
-      spec: "Sheet: Sales(Quantity)\n> Columns: Quantity, Market\n> Rows: Category, Segment\n> Colors: Market" },
-    { n: 6, t: "Data Types &mdash; Dimensions vs Measures", desc: "Blue pills (discrete) vs Green pills (continuous). Dimensions vs Measures. Try converting types." },
-    { n: 7, t: "Plot 2 &mdash; Sales Seasonality", chip: "plot",
-      spec: "Sheet: Sales(Seasonality)\n> Columns: Order Date &rarr; Monthly\n> Rows: Sales (Sum vs Average)\n> Colors: Year[Order Date]\n> Calculation: Year-over-Year Growth (Relative to Previous / Next / First / Last)" },
-    { n: 8, t: "Plot 2 &mdash; Adding Details", desc: "Enrich the seasonality plot.",
-      spec: "> Tooltip: add the YoY Growth\n> Rows: add Category\n> Right-click a point &rarr; Add comments (annotate)\n> Share: Copy image; Copy Data &rarr; Excel" },
-    { n: 9, t: "Plot 3 &mdash; Crosstab (Sales by Category)", chip: "plot",
-      desc: "1. Start with: Columns = Month(Order Date), Rows = Category, Sum(Sales).\n2. Duplicate as a crosstab (Measure Names added to Rows). Swap Axis. Move Category to Rows.\n3. Color = Profit. Change palette, stepped bins of 6. Mark Type = Square. Mark Labels = Text.\n4. View: Entire View.\n5. Highlighter: right-click the Category pill &rarr; Set as Highlighter. Select 'Office Supplies'.",
-      quiz: "What do you conclude by highlighting each Category? Are Furniture profits good?" },
-    { n: 10, t: "Plot 4 &mdash; Symbol Map (Global Sales &amp; Profit)", chip: "plot",
-      desc: "Use 'Show Me' to suggest a view for selected fields. Hold Ctrl/Cmd to multi-select.",
-      spec: "New Sheet: Global Sales and Profit\n1. Select States + Profit (Ctrl/Cmd)\n2. Show Me &rarr; Symbol Map\n3. Color State by Profit\n4. Marks &rarr; Maps\n5. Use Search to find Profit across States" },
-    { n: 11, t: "Plot 4 &mdash; Adding Filter", desc: "Add Category to Filters &rarr; Show Filter &rarr; change setting to 'Single Value'." },
-    { n: 12, t: "Plot 5 &mdash; Maps Advanced", desc: "Duplicate the Map sheet.",
-      spec: "1. Select a rough group of countries in the southern hemisphere\n2. Return to Sales Sheet (Plot 1)\n3. Add the new group of States to Columns\n4. Observe the result" },
-    { n: 13, t: "Plot 6 &mdash; Product Sales &amp; Sub-Categories", chip: "plot",
-      spec: "Sheet: Product Sales\n> Columns: Category, Sub-Category\n> Rows: Sales\n> Hierarchy: Product (Category &rarr; Sub-Category &rarr; Product Name)\n> Color: Profit\n> Sort bars\n> Group: combine low-sales items, rename (e.g. 'small office supplies')\n> Final: swap axis, hide extra axes, save",
-      quiz: "Which product is doing poorly from a profitability standpoint? Try adding Market to Columns &mdash; what changes?" },
-    { n: 14, t: "Data Analysis &mdash; Customer Breakdown", chip: "plot",
-      spec: "Sheet: Customer Breakdown\n> Columns: Profit\n> Rows: Shipping Cost\n> Color: Category\n\nTasks:\n1. Add Customer ID (or disaggregate data from Analysis tab)\n2. Add a Trendline" },
+  s1: [
+    { n:1, t:"Tableau Welcome Page", d:"Open Tableau and explore the welcome page — Connect panel, recent workbooks, Discover pane." },
+    { n:2, t:"Load data from Excel", chip:"file",
+      d:"Connect to the Global Superstore Orders 2016 Excel file. Drag the Orders sheet to the canvas." },
+    { n:3, t:"Split Order ID",
+      d:"Add the Returns CSV and join it from the left.",
+      s:"> Change 'Row ID' type to String\n> Split 'Order ID' — each code is \"DC-year-other\"\n> Keep only the DC code" },
+    { n:4, t:"Connection Type",
+      d:"Understand the difference between Data Extracts and Live Connections. When to use each." },
+    { n:5, t:"Plot 1 — Dive into data (Sales Quantity)", chip:"plot",
+      shelf:{sheet:"Sales(Quantity)",cols:[["Quantity","meas","agg"],["Market","dim"]],rows:[["Category","dim"],["Segment","dim"]],color:[["Market","dim"]]} },
+    { n:6, t:"Data Types — Dimensions vs Measures",
+      d:"Blue pills (discrete) vs Green pills (continuous). Dimensions vs Measures. Try converting types." },
+    { n:7, t:"Plot 2 — Sales Seasonality", chip:"plot",
+      shelf:{sheet:"Sales(Seasonality)",cols:[["MONTH(Order Date)","dim"]],rows:[["Sales","meas","agg"]],color:[["YEAR(Order Date)","dim"]],note:"Add calculated field: Year-over-Year Growth (Quick Table Calc → Relative to Previous/Next/First/Last)"} },
+    { n:8, t:"Plot 2 — Adding Details",
+      d:"Enrich the seasonality plot.",
+      s:"> Tooltip: add the YoY Growth\n> Rows: add Category\n> Right-click a point → Add comments (annotate)\n> Share: Copy image; Copy Data → Excel" },
+    { n:9, t:"Plot 3 — Crosstab (Sales by Category)", chip:"plot",
+      shelf:{sheet:"Sales (Category)",cols:[["MONTH(Order Date)","dim"]],rows:[["Category","dim"],["Measure Names","dim"]],color:[["Profit","meas","agg"]],marksType:"Square",marksLabel:"Text",note:"Duplicate as crosstab · Swap Axis · Stepped color 6 bins · Set Category as Highlighter → pick 'Office Supplies'"},
+      q:"What do you conclude by highlighting each Category? Are Furniture profits good?" },
+    { n:10, t:"Plot 4 — Symbol Map (Global Sales & Profit)", chip:"plot",
+      d:"Use 'Show Me' to suggest a view. Hold Ctrl/Cmd to multi-select fields (States + Profit), then click Show Me → Symbol Map.",
+      shelf:{sheet:"Global Sales and Profit",cols:[["Longitude","meas","agg"]],rows:[["Latitude","meas","agg"]],color:[["Profit","meas","agg"]],detail:[["State","dim"]],marksType:"Map",note:"Ctrl/Cmd-select States + Profit → Show Me → Symbol Map"} },
+    { n:11, t:"Plot 4 — Adding Filter",
+      d:"Add Category to Filters → Show Filter → change setting to 'Single Value'." },
+    { n:12, t:"Plot 5 — Maps Advanced",
+      d:"Duplicate the Map sheet.",
+      s:"1. Select a rough group of countries in the southern hemisphere\n2. Return to Sales Sheet (Plot 1)\n3. Add the new group of States to Columns\n4. Observe the result" },
+    { n:13, t:"Plot 6 — Product Sales & Sub-Categories", chip:"plot",
+      shelf:{sheet:"Product Sales",cols:[["Category","dim"],["Sub-Category","dim"]],rows:[["Sales","meas","agg"]],color:[["Profit","meas","agg"]],note:"Build hierarchy: Category → Sub-Category → Product Name · Sort bars · Group low-sales items · Swap axis"},
+      q:"Which product is doing poorly from a profitability standpoint? Try adding Market to Columns — what changes?" },
+    { n:14, t:"Data Analysis — Customer Breakdown", chip:"plot",
+      shelf:{sheet:"Customer Breakdown",cols:[["Profit","meas","agg"]],rows:[["Shipping Cost","meas","agg"]],color:[["Category","dim"]],detail:[["Customer ID","dim"]],note:"Or disaggregate from Analysis tab · Add Trendline from Analytics pane"} },
   ],
-  s1l2: [
-    { n: 1, t: "Intro &mdash; Anscombe's Quartet",
-      desc: "Visual Analytics is the process of gaining knowledge and insight from data through interactive, visual interfaces.\n\nAnscombe's Quartet: four datasets with nearly identical summary statistics but very different shapes. Built by Francis Anscombe (1973) to show why you should always plot your data.",
-      chip: "file", chipText: "CSV" },
-    { n: 2, t: "Working with Marks", chip: "file", chipText: "getting_started.twbx",
-      spec: "Sheet: Marks\n> Rows: Sales\n> Columns: Order Date\n\nTasks:\n&bull; Change Marks to Bar\n&bull; (i) Add Market to Color\n&bull; (ii) Change color based on Quantity &mdash; what is the difference?" },
-    { n: 3, t: "Building the View", chip: "file", chipText: "getting_started.twbx",
-      spec: "Sheet: Views\n> Rows: Shipping Cost\n> Columns: Profit\n\nTasks:\n1. Analysis tab &rarr; uncheck 'Aggregate Measures'\n2. Undo. Add Order ID to Detail. Any difference?\n3. Undo. Add Category to Color, Market to Shape. How many marks?\n4. What happens if you add Country to Detail?\n5. Change symbols for the shape",
-      quiz: "What is your interpretation between tasks 3 and 4? Can you reveal more info by adding/removing other elements?" },
-    { n: 4, t: "Highlights", chip: "file", chipText: "getting_started.twbx",
-      spec: "Sheet 1: Highlight 1\n&bull; Add Highlighter for Category\n&bull; Add Highlighter based on Market (Detail)\n\nSheet 2: Highlight 2\n&bull; Ctrl/Cmd: select and highlight multiple parts\n&bull; From Order Priority highlight: select all 'Critical' &rarr; Red, 'High' &rarr; Pink" },
-    { n: 5, t: "Drill Down to Data", chip: "file", chipText: "drill_down.twbx",
-      spec: "Sheet: Raw Data\n1. Click 'View Data' button\n2. Use tooltips command button to see selected item data and full data" },
-    { n: 6, t: "Categorical Hierarchy", chip: "file", chipText: "drill_down.twbx",
-      spec: "Sheet: Hierarchy1\n&bull; In the data pane, create a hierarchy: Category &rarr; Sub-Category &rarr; Product Name\n\nSheet: Hierarchy2\n&bull; Duplicate 'sub-category' and replace it with the Hierarchy" },
-    { n: 7, t: "Date Hierarchies", chip: "file", chipText: "drill_down.twbx",
-      spec: "Sheet: Date Hierarchies\n> Column: Order Date [YEAR]\n> Row: Sales\n\nTasks:\n&bull; Drill down Order Date to month\n&bull; Remove the Quarter pill",
-      quiz: "Q1: Why are sales values shown on separate sections? How can we fix it?\nQ2: What happens to drill-down once you change the Order Date type?" },
-    { n: 8, t: "Parameters &mdash; TopN Filter", chip: "file", chipText: "parameters.twbx",
-      spec: "Sheet 1: What is a Parameter?\n\nSheet 2: Parameters with Filters\n&bull; Filter shelf: Customer ID &rarr; Edit Filter &rarr; observe setting\n&bull; Select 'Top' tab &rarr; create Parameter: TopN (min 1, max 10)" },
-    { n: 9, t: "Parameters with Sets", chip: "file", chipText: "parameters.twbx",
-      spec: "Sheet: Parameters with Sets\n&bull; Right-click Product &rarr; Create New Set &rarr; label 'TopProducts'\n&bull; Choose items based on TopN Parameter (Top tab)\n&bull; Bring TopProducts to Color",
-      quiz: "How can you add a parameter control to the view?" },
-    { n: 10, t: "Calculation-based Parameter + Reference Line", chip: "file", chipText: "parameters.twbx",
-      desc: "Formula pattern:\nIF AVG([Shipping Cost]) > [Shipping Cost Cutoff]\nTHEN \"High\" ELSE \"Low\" END",
-      spec: "Sheet 1: Check how the parameter 'Shipping cost cut-off' is used in 'Shipping cost color'\n\nSheet 2: Add a reference line\n&bull; Use Analytics tab to add a reference line based on the parameter" },
+  s2: [
+    { n:1, t:"Intro — Anscombe's Quartet", chip:"file",
+      d:"Visual Analytics = gaining insight through interactive visuals.\n\nAnscombe's Quartet: four datasets with nearly identical summary statistics but very different shapes. Built by Francis Anscombe (1973) to show why you should always plot your data." },
+    { n:2, t:"Working with Marks", chip:"file",
+      shelf:{sheet:"Marks",cols:[["Order Date","dim"]],rows:[["Sales","meas","agg"]],color:[["Market","dim"]],marksType:"Bar",note:"Change Marks to Bar · Try (i) Market on Color, then (ii) Quantity on Color — what is the difference?"} },
+    { n:3, t:"Building the View", chip:"file",
+      shelf:{sheet:"Views",cols:[["Profit","meas","agg"]],rows:[["Shipping Cost","meas","agg"]],color:[["Category","dim"]],shape:[["Market","dim"]],detail:[["Order ID","dim"]],note:"1) Uncheck 'Aggregate Measures' · 2) Undo + Order ID on Detail · 3) Undo + Category→Color + Market→Shape · 4) Add Country to Detail"},
+      q:"What is your interpretation between tasks 3 and 4? Can you reveal more info by adding/removing other elements?" },
+    { n:4, t:"Highlights", chip:"file",
+      s:"Sheet 1: Highlight 1\n• Add Highlighter for Category\n• Add Highlighter based on Market (Detail)\n\nSheet 2: Highlight 2\n• Ctrl/Cmd: select and highlight multiple parts\n• From Order Priority highlight: 'Critical' → Red, 'High' → Pink" },
+    { n:5, t:"Drill Down to Data", chip:"file",
+      s:"Sheet: Raw Data\n1. Click 'View Data' button\n2. Use tooltips command button to see selected + full data" },
+    { n:6, t:"Categorical Hierarchy", chip:"file",
+      s:"Sheet: Hierarchy1\n• Create hierarchy: Category → Sub-Category → Product Name\n\nSheet: Hierarchy2\n• Duplicate 'sub-category' and replace with the Hierarchy" },
+    { n:7, t:"Date Hierarchies", chip:"file",
+      shelf:{sheet:"Date Hierarchies",cols:[["YEAR(Order Date)","dim"]],rows:[["Sales","meas","agg"]],note:"Drill down YEAR → QUARTER → MONTH · Remove the Quarter pill"},
+      q:"Q1: Why are sales values shown on separate sections? How can we fix it?\nQ2: What happens to drill-down once you change the Order Date type?" },
+    { n:8, t:"Parameters — TopN Filter", chip:"file",
+      s:"Sheet 1: What is a Parameter?\n\nSheet 2: Parameters with Filters\n• Filter shelf: Customer ID → Edit Filter\n• Select 'Top' tab → create Parameter: TopN (min 1, max 10)" },
+    { n:9, t:"Parameters with Sets", chip:"file",
+      s:"Sheet: Parameters with Sets\n• Right-click Product → Create New Set → 'TopProducts'\n• Choose items based on TopN Parameter (Top tab)\n• Bring TopProducts to Color",
+      q:"How can you add a parameter control to the view?" },
+    { n:10, t:"Calculation-based Parameter + Reference Line", chip:"file",
+      d:"Formula pattern:\nIF AVG([Shipping Cost]) > [Shipping Cost Cutoff]\nTHEN \"High\" ELSE \"Low\" END",
+      s:"Sheet 1: Check how 'Shipping cost cut-off' is used in 'Shipping cost color'\n\nSheet 2: Add a reference line\n• Use Analytics tab to add a reference line based on the parameter" },
   ]
 };
 
 // ============================================
-// RENDER TASKS
+// SHELF MOCKUP RENDERER (Tableau-style)
 // ============================================
-function renderTasks(groupId, tasks, colorClass) {
-  const container = document.getElementById(groupId + '-tasks');
-  container.innerHTML = tasks.map((task, idx) => {
-    const id = `${groupId}-t${task.n}`;
-    const chipHtml = task.chip === 'plot'
-      ? '<span class="task-chip task-chip--plot">PLOT</span>'
-      : task.chip === 'quiz'
-      ? '<span class="task-chip task-chip--quiz">QUIZ</span>'
-      : task.chip === 'file'
-      ? `<span class="task-chip task-chip--file">${task.chipText || 'FILE'}</span>`
-      : '';
-    const descHtml = task.desc ? `<div class="task-desc">${task.desc}</div>` : '';
-    const specHtml = task.spec ? `<div class="task-spec">${task.spec}</div>` : '';
-    const quizHtml = task.quiz ? `<div class="task-quiz">${task.quiz}</div>` : '';
-    return `
-      <div class="task-row task-row--${colorClass}" id="${id}">
-        <div class="task-border"></div>
-        <div class="task-header" onclick="toggleTask('${id}', event)">
-          <div class="task-check" onclick="toggleCheck('${id}', event)"></div>
-          <span class="task-num">T${task.n}</span>
-          <span class="task-title">${task.t}</span>
-          ${chipHtml}
-          <div class="task-chevron"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></div>
-        </div>
-        <div class="task-body">
-          <div class="task-body-inner">
-            ${descHtml}
-            ${specHtml}
-            ${quizHtml}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+function pill(p){
+  // p = [name, type, agg?]  e.g. ["Quantity","meas","agg"] or ["Market","dim"]
+  const type = p[1] || 'dim';
+  const hasAgg = p[2] === 'agg';
+  const label = hasAgg && type === 'meas' ? `SUM(${p[0]})` : p[0];
+  return `<span class="tab-pill ${type}">${label}</span>`;
+}
+function shelfRow(label, pills){
+  if(!pills || !pills.length) return '';
+  const pillsHtml = pills.map(pill).join('');
+  return `<div class="tab-shelf-row"><div class="tab-shelf-label">${label}</div><div class="tab-shelf-drop">${pillsHtml}</div></div>`;
+}
+function marksChip(label, pills, extra){
+  if(!pills || !pills.length) return '';
+  const pillsHtml = pills.map(pill).join('');
+  return `<div class="tab-shelf-row"><div class="tab-shelf-label">${label}</div><div class="tab-shelf-drop">${pillsHtml}${extra||''}</div></div>`;
+}
+function renderShelf(sh){
+  let html = `<div class="tab-shelf">`;
+  html += `<div class="tab-shelf-title">Sheet: ${sh.sheet || 'Untitled'}</div>`;
+  html += `<div class="tab-shelf-body">`;
+  html += `<div class="tab-legend"><span class="tab-legend-item"><span class="tab-legend-dot dim"></span>Dimension (discrete)</span><span class="tab-legend-item"><span class="tab-legend-dot meas"></span>Measure (continuous)</span></div>`;
+  html += shelfRow('Columns', sh.cols);
+  html += shelfRow('Rows', sh.rows);
+
+  // Marks card
+  if(sh.color || sh.detail || sh.shape || sh.size || sh.label || sh.marksType){
+    html += `<div class="tab-shelf-divider"><span class="tab-shelf-marks-label">Marks</span></div>`;
+    if(sh.marksType){
+      html += `<div class="tab-shelf-row"><div class="tab-shelf-label">Type</div><div class="tab-shelf-drop"><span class="tab-marks-chip"><span class="sw"></span>${sh.marksType}</span></div></div>`;
+    }
+    html += shelfRow('Color', sh.color);
+    html += shelfRow('Size', sh.size);
+    html += shelfRow('Label', sh.label);
+    html += shelfRow('Detail', sh.detail);
+    html += shelfRow('Shape', sh.shape);
+    html += shelfRow('Tooltip', sh.tooltip);
+  }
+
+  if(sh.note){
+    html += `<div class="tab-shelf-note">${sh.note}</div>`;
+  }
+  html += `</div></div>`;
+  return html;
 }
 
-renderTasks('s1l1', TASKS.s1l1, 's1l1');
-renderTasks('s1l2', TASKS.s1l2, 's1l2');
+// ============================================
+// RENDER TASKS
+// ============================================
+function renderTasks(groupKey, tasks) {
+  const list = document.getElementById(`${groupKey}-tasks`);
+  const sbItems = document.getElementById(`sbg-${groupKey === 's1' ? '1' : '2'}-items`);
+
+  const listHtml = [];
+  const sbHtml = [];
+
+  tasks.forEach(task => {
+    const id = `${groupKey}-t${task.n}`;
+    const chipHtml = task.chip === 'plot' ? '<span class="task-chip task-chip-plot">Plot</span>'
+      : task.chip === 'file' ? '<span class="task-chip task-chip-file">File</span>'
+      : '';
+    const quizChip = task.q ? '<span class="task-chip task-chip-quiz">Quiz</span>' : '';
+    const descHtml = task.d ? `<div class="task-details-desc">${task.d}</div>` : '';
+    const specHtml = task.s ? `<div class="task-details-spec">${task.s}</div>` : '';
+    const shelfHtml = task.shelf ? renderShelf(task.shelf) : '';
+    const quizHtml = task.q ? `<div class="task-details-quiz">${task.q}</div>` : '';
+
+    listHtml.push(`
+      <div class="task-item" id="${id}">
+        <div class="task-check" onclick="toggleCheck('${id}',event)"></div>
+        <span class="task-num-inline">T${task.n}</span>
+        <div class="task-row-main">
+          <div class="task-row-title">${task.t}${chipHtml}${quizChip}</div>
+        </div>
+        <div class="task-expand"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="task-details">${descHtml}${shelfHtml}${specHtml}${quizHtml}</div>
+    `);
+
+    sbHtml.push(`
+      <a class="sb-item" href="#${id}" data-task-id="${id}" onclick="focusTask('${id}',event)">
+        <span class="sb-num">T${task.n}</span>
+        <span class="sb-label">${task.t.replace(/—.*$/,'').trim()}</span>
+      </a>
+    `);
+  });
+
+  list.innerHTML = listHtml.join('');
+  sbItems.innerHTML = sbHtml.join('');
+
+  // Attach click handler to rows for expand (but not on the check)
+  list.querySelectorAll('.task-item').forEach(row => {
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('.task-check')) return;
+      row.classList.toggle('open');
+    });
+  });
+}
+
+renderTasks('s1', TASKS.s1);
+renderTasks('s2', TASKS.s2);
 
 // ============================================
 // INTERACTIONS
 // ============================================
-function toggleTask(id, e) {
-  if (e.target.closest('.task-check')) return;
-  document.getElementById(id).classList.toggle('expanded');
+function toggleMod(id){
+    const el=document.getElementById(id);
+    if(el)el.classList.toggle('expanded');
 }
-
-function toggleCheck(id, e) {
-  e.stopPropagation();
-  const row = document.getElementById(id);
-  row.classList.toggle('done');
-  row.querySelector('.task-check').classList.toggle('checked');
-  saveProgress();
-  updateProgressBar();
+function toggleSbGroup(id){
+    const el=document.getElementById(id);
+    if(el)el.classList.toggle('collapsed');
+}
+function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+}
+function focusTask(id,e){
+    if(e)e.preventDefault();
+    const el=document.getElementById(id);
+    if(!el)return;
+    // Expand parent module
+    const mod=el.closest('.mod-row');
+    if(mod)mod.classList.add('expanded');
+    // Scroll + open
+    setTimeout(()=>{
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        el.classList.add('open');
+    },120);
+    if(window.innerWidth<=980)document.getElementById('sidebar').classList.remove('open');
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+    document.querySelectorAll(`.sb-item[data-task-id="${id}"]`).forEach(i=>i.classList.add('active'));
 }
 
 // ============================================
 // PROGRESS (localStorage)
 // ============================================
-const STORAGE_KEY = 'tableau_workshop_progress_v1';
+const STORAGE_KEY='tableau_workshop_progress_v2';
 
-function saveProgress() {
-  const done = [...document.querySelectorAll('.task-row.done')].map(r => r.id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(done));
+function toggleCheck(id,e){
+    e.stopPropagation();
+    const row=document.getElementById(id);
+    row.classList.toggle('done');
+    // Mirror to sidebar
+    document.querySelectorAll(`.sb-item[data-task-id="${id}"]`).forEach(i=>i.classList.toggle('sb-done',row.classList.contains('done')));
+    saveProgress();
+    updateCounts();
 }
 
-function loadProgress() {
-  try {
-    const done = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    done.forEach(id => {
-      const row = document.getElementById(id);
-      if (row) {
-        row.classList.add('done');
-        row.querySelector('.task-check').classList.add('checked');
-      }
+function saveProgress(){
+    const done=[...document.querySelectorAll('.task-item.done')].map(r=>r.id);
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(done));
+}
+
+function loadProgress(){
+    try{
+        const done=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+        done.forEach(id=>{
+            const row=document.getElementById(id);
+            if(row){
+                row.classList.add('done');
+                document.querySelectorAll(`.sb-item[data-task-id="${id}"]`).forEach(i=>i.classList.add('sb-done'));
+            }
+        });
+    }catch(e){}
+    updateCounts();
+}
+
+function updateCounts(){
+    ['s1','s2'].forEach(key=>{
+        const total=document.querySelectorAll(`#${key}-tasks .task-item`).length;
+        const done=document.querySelectorAll(`#${key}-tasks .task-item.done`).length;
+        const el=document.getElementById(`${key}-progress`);
+        if(el)el.textContent=`${done} / ${total}`;
     });
-  } catch (e) {}
-  updateProgressBar();
+    const totalDone=document.querySelectorAll('.task-item.done').length;
+    const el=document.getElementById('statDone');
+    if(el)el.textContent=totalDone;
 }
 
-function updateProgressBar() {
-  const total = document.querySelectorAll('.task-row').length;
-  const done = document.querySelectorAll('.task-row.done').length;
-  const pct = total > 0 ? (done / total) * 100 : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressCount').textContent = `${done} / ${total}`;
-}
-
-function resetProgress() {
-  if (!confirm('Reset all task progress?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  document.querySelectorAll('.task-row.done').forEach(r => {
-    r.classList.remove('done');
-    r.querySelector('.task-check').classList.remove('checked');
-  });
-  updateProgressBar();
+function resetProgress(){
+    if(!confirm('Reset all task progress?'))return;
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.task-item.done').forEach(r=>r.classList.remove('done'));
+    document.querySelectorAll('.sb-item.sb-done').forEach(i=>i.classList.remove('sb-done'));
+    updateCounts();
 }
 
 loadProgress();
