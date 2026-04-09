@@ -21,8 +21,8 @@ Tableau-Workshop/
 ├── session-1/
 │   ├── Tableau Agenda_1.xlsx       ← original TA agenda
 │   └── data/
-│       ├── Global Superstore Orders 2016.xlsx
-│       └── Global Superstore Returns 2016.csv
+│       ├── Global Superstore Orders 2025.xlsx
+│       └── Global Superstore Returns 2025.csv
 ├── session-2/
 │   ├── tableau-files/              ← .twbx workbooks for Lecture 2
 │   │   ├── 1- getting_started_in_visual_analytics.twbx
