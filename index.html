@@ -727,6 +727,48 @@ header{
 .tab-legend-dot.dim{background:#1e5fa8}
 .tab-legend-dot.meas{background:#2e8540}
 
+/* Copyable formula blocks */
+.formula-section{margin:10px 0}
+.formula-card{
+    display:flex;align-items:center;gap:10px;
+    padding:8px 12px;
+    background:#0f172a;
+    border:1px solid #1e293b;
+    border-radius:8px;
+    margin-bottom:6px;
+    cursor:pointer;
+    transition:all .2s ease;
+    position:relative;
+}
+.formula-card:hover{border-color:#3b82f6;box-shadow:0 0 12px rgba(59,130,246,0.15)}
+.formula-card.copied{border-color:#10b981;box-shadow:0 0 12px rgba(16,185,129,0.2)}
+.formula-name{
+    flex-shrink:0;
+    font-size:0.72rem;font-weight:700;
+    color:#94a3b8;
+    min-width:100px;
+    font-family:'Outfit',sans-serif;
+}
+.formula-code{
+    flex:1;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;
+    color:#e2e8f0;
+    white-space:pre-wrap;
+    word-break:break-all;
+    user-select:all;
+}
+.formula-copy{
+    flex-shrink:0;
+    font-size:0.62rem;font-weight:700;
+    color:#64748b;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    transition:color .2s;
+}
+.formula-card:hover .formula-copy{color:#3b82f6}
+.formula-card.copied .formula-copy{color:#10b981}
+
 /* Stub note */
 .stub-note{
     padding:18px 22px;
@@ -822,7 +864,7 @@ header{
             <button class="sb-group-header" onclick="toggleSbGroup('sbg-3')">
                 <span class="sb-dot"></span>
                 <span>Session 2 · L3+L4</span>
-                <span class="sb-count">13</span>
+                <span class="sb-count">14</span>
                 <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="sb-items" id="sbg-3-items-l3"></div>
@@ -853,7 +895,7 @@ header{
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-                <div class="stat-value"><span id="statDone">0</span><span class="total">&nbsp;/&nbsp;37</span></div>
+                <div class="stat-value"><span id="statDone">0</span><span class="total">&nbsp;/&nbsp;38</span></div>
                 <div class="stat-label">Tasks done</div>
             </div>
             <div class="stat-card">
@@ -987,7 +1029,7 @@ header{
             <div class="phase-header session3">
                 <div class="phase-dot"></div>
                 <span>Session 2</span>
-                <span class="phase-count">2 lectures · 13 tasks</span>
+                <span class="phase-count">2 lectures · 14 tasks</span>
             </div>
 
             <div class="mod-row session3" id="m3">
@@ -1021,7 +1063,7 @@ header{
                         </div>
                         <div class="task-label-row">
                             <div class="data-label" style="margin:0">Tasks</div>
-                            <span class="task-progress" id="s3-progress">0 / 7</span>
+                            <span class="task-progress" id="s3-progress">0 / 8</span>
                         </div>
                         <div class="task-list" id="s3-tasks"></div>
                     </div>
@@ -1136,19 +1178,29 @@ const TASKS = {
   s3: [
     { n:1, t:"Review the Dataset",
       d:"Open Emergency_Department.xlsx and review the data.\nImport data into Tableau (create a new Workbook)." },
-    { n:2, t:"Calculated Fields", chip:"plot",
-      d:"Create three new calculated fields:",
-      s:"[LOS] = DATEDIFF('day', [Check In Time], [Discharge Datetime])\n[NOP] = COUNTD([MRN Number])   (distinct patient count)\n[Number of Records] = 1" },
+    { n:2, t:"Calculated Fields",
+      d:"Create three new calculated fields. Click each formula to copy it.",
+      formulas:[
+        {name:"LOS (Length of Stay)", code:"DATEDIFF('day', [Check In Time], [Discharge Datetime])"},
+        {name:"NOP (Number of Patients)", code:"COUNTD([MRN Number])"},
+        {name:"Number of Records", code:"1"}
+      ] },
     { n:3, t:"Patient Hourly Load — Heatmap", chip:"plot",
       shelf:{sheet:"Patient Hourly Load",rows:[["HOUR(Check In Time)","dim"]],cols:[["WEEKDAY(Check In Time)","dim"]],color:[["Number of Records","meas","agg"]],marksType:"Square",note:"Fit Width · Change filter to dropdown box"},
       q:"Do you observe any specific congestion pattern in the ER?" },
     { n:4, t:"Patient Distribution", chip:"plot",
       shelf:{sheet:"Clinical Unit Patient Distribution",rows:[["Clinical Unit","dim"]],color:[["Wait Time Min","meas","agg"]],size:[["NOP","meas","agg"]],label:[["Diagnosis Primary","dim"]],marksType:"Square",note:"Filter Clinical Unit to 'Emergency'"} },
-    { n:5, t:"Daily Averages + Reference Line", chip:"plot",
+    { n:5, t:"Donut Chart — Diagnosis Breakdown (Tooltip)", chip:"plot",
+      d:"Build a donut chart showing diagnosis distribution, then embed it as a Viz in Tooltip on another chart.",
+      shelf:{sheet:"Diagnosis Donut",rows:[["Number of Records","meas","agg"]],color:[["Diagnosis Primary","dim"]],marksType:"Pie",note:"1. Create a Pie chart (Marks = Pie, Color = Diagnosis, Angle = SUM(Number of Records))\n2. Add a second axis with MIN(0), set inner circle to white → donut\n3. Go to Patient Distribution sheet → Tooltip → Insert → Sheets → Diagnosis Donut\n4. Now hovering a clinical unit shows the diagnosis breakdown as a donut"} },
+    { n:6, t:"Daily Averages + Reference Line", chip:"plot",
       shelf:{sheet:"Daily Averages",cols:[["MONTH(Check In Time)","dim"],["DAY(Check In Time)","dim"]],rows:[["Number of Records","meas","agg"]],note:"Filter: Jan + Feb only · Add reference line: Avg Wait Time per pane"} },
-    { n:6, t:"Wait Time KPI — Bar + Circle", chip:"plot",
-      shelf:{sheet:"Wait Time KPI",cols:[["Wait Time Min","meas"]],rows:[["Clinical Units","dim"]],marksType:"Bar + Circle",note:"Add 60-min reference line\nCalculated field: WTcolorcode = IF MEDIAN([Wait Time Min]) > 60 THEN 'Over Target' ELSE 'Below Target' END\nAdd Parameters for color coding"} },
-    { n:7, t:"Busy Times — Dual Axis", chip:"plot",
+    { n:7, t:"Wait Time KPI — Bar + Circle", chip:"plot",
+      shelf:{sheet:"Wait Time KPI",cols:[["Wait Time Min","meas"]],rows:[["Clinical Units","dim"]],marksType:"Bar + Circle",note:"Add 60-min reference line · Add Parameters for color coding"},
+      formulas:[
+        {name:"WTcolorcode", code:'IF MEDIAN([Wait Time Min]) > 60 THEN "Over Target" ELSE "Below Target" END'}
+      ] },
+    { n:8, t:"Busy Times — Dual Axis", chip:"plot",
       shelf:{sheet:"Busy Times of the Day",cols:[["HOUR(Check In Time)","dim"]],rows:[["NOP","meas","agg"],["Wait Time Min","meas","agg"]],note:"Make a Dual Axis graph"} },
   ],
   s4: [
@@ -1217,6 +1269,31 @@ function renderShelf(sh){
 }
 
 // ============================================
+// FORMULA RENDERER (click-to-copy)
+// ============================================
+function renderFormulas(formulas){
+  let html = '<div class="formula-section">';
+  formulas.forEach((f,i) => {
+    const id = 'f'+Date.now()+i;
+    html += `<div class="formula-card" id="${id}" onclick="copyFormula('${id}','${f.code.replace(/'/g,"\\'")}')">
+      <span class="formula-name">${f.name}</span>
+      <code class="formula-code">${f.code}</code>
+      <span class="formula-copy">click to copy</span>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+function copyFormula(id, code){
+  navigator.clipboard.writeText(code).then(()=>{
+    const el=document.getElementById(id);
+    el.classList.add('copied');
+    el.querySelector('.formula-copy').textContent='copied!';
+    setTimeout(()=>{el.classList.remove('copied');el.querySelector('.formula-copy').textContent='click to copy';},2000);
+  });
+}
+
+// ============================================
 // RENDER TASKS
 // ============================================
 function renderTasks(groupKey, tasks, sbTarget) {
@@ -1236,6 +1313,7 @@ function renderTasks(groupKey, tasks, sbTarget) {
     const descHtml = task.d ? `<div class="task-details-desc">${task.d}</div>` : '';
     const specHtml = task.s ? `<div class="task-details-spec">${task.s}</div>` : '';
     const shelfHtml = task.shelf ? renderShelf(task.shelf) : '';
+    const formulaHtml = task.formulas ? renderFormulas(task.formulas) : '';
     const quizHtml = task.q ? `<div class="task-details-quiz">${task.q}</div>` : '';
 
     listHtml.push(`
@@ -1247,7 +1325,7 @@ function renderTasks(groupKey, tasks, sbTarget) {
         </div>
         <div class="task-expand"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
-      <div class="task-details">${descHtml}${shelfHtml}${specHtml}${quizHtml}</div>
+      <div class="task-details">${descHtml}${formulaHtml}${shelfHtml}${specHtml}${quizHtml}</div>
     `);
 
     sbHtml.push(`
