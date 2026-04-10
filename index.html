@@ -1194,12 +1194,13 @@ const TASKS = {
         {name:"LOS (Length of Stay)", code:"DATEDIFF('day', [Check In Time], [Discharge Datetime])"},
         {name:"NOP (Number of Patients)", code:"COUNTD([MRN Number])"},
         {name:"Number of Records", code:"1"},
-        {name:"Long Wait (Boolean)", code:"[Wait Time Min] > 60"}
+        {name:"Long Wait (Boolean)", code:"[Wait Time Min] > [Wait Time Threshold]"}
       ] },
-    { n:3, t:"Long Wait Analysis", chip:"plot",
-      d:"Use the Boolean field [Long Wait] to split and color your analysis.",
-      shelf:{sheet:"Long Wait Breakdown",cols:[["Clinical Unit","dim"]],rows:[["Number of Records","meas","agg"]],color:[["Long Wait","dim"]],marksType:"Bar",note:"1. Drag [Long Wait] to Color — bars split into True (red) / False (green)\n2. Add [Long Wait] to Label to show counts\n3. Right-click color legend → Edit Colors: True = #ef4444, False = #10b981\n4. Sort by descending total to see which units have the most long waits"},
-      q:"Which clinical unit has the highest proportion of patients waiting over 60 minutes?" },
+    { n:3, t:"Long Wait Analysis (with Parameter)", chip:"plot",
+      d:"First create a Parameter, then use it in the Boolean field so the threshold is dynamic.",
+      s:"1. Right-click in Data pane → Create Parameter\n   Name: Wait Time Threshold\n   Data type: Integer\n   Current value: 60\n   Range: Min = 10, Max = 180, Step = 10\n2. Right-click the parameter → Show Parameter Control\n3. The [Long Wait] field already references [Wait Time Threshold] — as you slide the parameter, the chart updates live",
+      shelf:{sheet:"Long Wait Breakdown",cols:[["Clinical Unit","dim"]],rows:[["Number of Records","meas","agg"]],color:[["Long Wait","dim"]],marksType:"Bar",note:"Drag [Long Wait] to Color — True (red) / False (green)\nAdd [Long Wait] to Label · Sort descending\nSlide the parameter to 30, 60, 90 min and watch the split change"},
+      q:"Set the threshold to 30 minutes — which unit is now mostly red? Change to 90 — what shifts?" },
     { n:4, t:"Patient Hourly Load — Heatmap", chip:"plot",
       shelf:{sheet:"Patient Hourly Load",rows:[["HOUR(Check In Time)","dim"]],cols:[["WEEKDAY(Check In Time)","dim"]],color:[["Number of Records","meas","agg"]],marksType:"Square",note:"Fit Width · Change filter to dropdown box"},
       q:"Do you observe any specific congestion pattern in the ER?" },
