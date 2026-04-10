@@ -886,6 +886,22 @@ header{
     <aside class="sidebar" id="sidebar">
         <div class="sb-title">Workshop Navigation</div>
 
+        <div class="sb-group" id="sbg-mod0" style="margin-bottom:14px">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-mod0')" style="color:var(--text-primary)">
+                <span class="sb-dot" style="background:#d97706"></span>
+                <span>Presentation Skills</span>
+                <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="sb-items">
+                <a class="sb-item" href="#m0a" onclick="focusMod('m0a')" style="font-weight:600">
+                    <span class="sb-label">The Art of Presentation</span>
+                </a>
+                <a class="sb-item" href="#m0b" onclick="focusMod('m0b')" style="font-weight:600">
+                    <span class="sb-label">Be A Storyteller</span>
+                </a>
+            </div>
+        </div>
+
         <div class="sb-group session1" id="sbg-mod1">
             <button class="sb-group-header" onclick="toggleSbGroup('sbg-mod1')">
                 <span class="sb-dot"></span>
@@ -944,6 +960,37 @@ header{
         <!-- ═══════════════ MODULES ═══════════════ -->
         <div class="modules-section">
             <div class="section-label">Session Outline</div>
+
+            <!-- ═══ MODULE 0: PRESENTATION SKILLS ═══ -->
+            <div class="phase-header" style="background:linear-gradient(135deg,rgba(217,119,6,0.08),rgba(217,119,6,0.02));border-left:3px solid #d97706">
+                <div class="phase-dot" style="background:#d97706"></div>
+                <span>Presentation Skills</span>
+                <span class="phase-count">2 interactive slide decks</span>
+            </div>
+
+            <div class="mod-row" id="m0a" style="border-left:4px solid #d97706">
+                <div class="mod-header" onclick="window.open('presentations/TheArtOfPresentation.html','_blank')">
+                    <img class="mod-img" src="presentations/img/aop-hero-stage.png" alt="Art of Presentation" loading="lazy" onclick="showLightbox(this.src,event)">
+                    <span class="mod-title">
+                        The Art of Presentation
+                        <span class="mod-sub">7 principles from Steve Jobs' legendary keynotes</span>
+                    </span>
+                    <span class="status-badge ready"><span class="dot"></span>9 slides</span>
+                    <div class="mod-chevron"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+                </div>
+            </div>
+
+            <div class="mod-row" id="m0b" style="border-left:4px solid #d97706">
+                <div class="mod-header" onclick="window.open('presentations/BeAStoryteller.html','_blank')">
+                    <img class="mod-img" src="presentations/img/bas-hero-story.png" alt="Be A Storyteller" loading="lazy" onclick="showLightbox(this.src,event)">
+                    <span class="mod-title">
+                        Be A Storyteller
+                        <span class="mod-sub">Neuroscience of stories, CEO storytellers, exercises</span>
+                    </span>
+                    <span class="status-badge ready"><span class="dot"></span>9 slides</span>
+                    <div class="mod-chevron"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+                </div>
+            </div>
 
             <!-- ═══ MODULE 1: GLOBAL SUPERSTORE ═══ -->
             <div class="phase-header session1">

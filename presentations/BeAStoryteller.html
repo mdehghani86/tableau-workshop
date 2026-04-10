@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be a Storyteller — IE 5374</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+    --bg:#FAFBFC;
+    --surface:rgba(255,255,255,0.72);
+    --border:rgba(148,163,184,0.2);
+    --text:#1a1a2e;
+    --text-m:rgba(26,26,46,0.55);
+    --text-d:rgba(26,26,46,0.35);
+    --pri:#7C3AED;
+    --pri-light:#A78BFA;
+    --pri-dark:#6D28D9;
+    --pri-glass:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(167,139,250,0.03));
+    --blue:#2563EB;
+    --blue-glass:linear-gradient(135deg,rgba(37,99,235,0.06),rgba(96,165,250,0.04));
+    --teal:#0D9488;
+    --teal-glass:linear-gradient(135deg,rgba(13,148,136,0.06),rgba(94,234,212,0.03));
+    --red:#DC2626;
+    --red-glass:linear-gradient(135deg,rgba(220,38,38,0.05),rgba(252,165,165,0.03));
+    --green:#059669;
+    --green-glass:linear-gradient(135deg,rgba(5,150,105,0.06),rgba(110,231,183,0.03));
+    --amber:#D97706;
+    --amber-glass:linear-gradient(135deg,rgba(217,119,6,0.06),rgba(252,211,77,0.03));
+    --R:20px;
+    --shadow:0 4px 24px rgba(0,0,0,0.04),0 1px 4px rgba(0,0,0,0.02);
+    --shadow-lg:0 16px 48px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.03);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;scroll-snap-type:y mandatory;height:100vh;overflow-y:scroll}
+
+.slide{width:100vw;height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;padding:70px 90px}
+
+.g{background:var(--surface);border:1px solid var(--border);border-radius:var(--R);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);padding:32px;box-shadow:var(--shadow);position:relative;transition:box-shadow .3s ease,transform .3s ease}
+.g:hover{box-shadow:0 8px 32px rgba(0,0,0,0.06);transform:translateY(-1px)}
+.g::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),rgba(200,215,240,0.3),transparent);border-radius:1px}
+.g-pri{background:var(--pri-glass)}.g-blue{background:var(--blue-glass)}.g-teal{background:var(--teal-glass)}.g-red{background:var(--red-glass)}.g-green{background:var(--green-glass)}.g-amber{background:var(--amber-glass)}
+
+.gx{background:linear-gradient(135deg,var(--pri),var(--pri-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gx-b{background:linear-gradient(135deg,#2563EB,#1E40AF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gx-t{background:linear-gradient(135deg,#14B8A6,#0D9488);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gx-a{background:linear-gradient(135deg,#F59E0B,#D97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gx-g{background:linear-gradient(135deg,#10B981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.orb{position:absolute;border-radius:50%;pointer-events:none;animation:fl 20s ease-in-out infinite}
+.orb-p{background:radial-gradient(circle,rgba(167,139,250,0.06) 0%,transparent 70%)}
+.orb-b{background:radial-gradient(circle,rgba(96,165,250,0.06) 0%,transparent 70%)}
+.orb-pk{background:radial-gradient(circle,rgba(244,114,182,0.15) 0%,transparent 70%)}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-35px) scale(1.04)}66%{transform:translate(-20px,20px) scale(0.96)}}
+
+.nav-dots{position:fixed;right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100}
+.nav-dot{width:10px;height:10px;border-radius:50%;background:rgba(17,24,39,0.12);cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,0.5);padding:0;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.nav-dot:hover{background:rgba(17,24,39,0.25)}
+.nav-dot.active{background:var(--pri);border-color:rgba(255,255,255,0.8);box-shadow:0 0 14px rgba(124,58,237,0.4);transform:scale(1.3)}
+
+.ft{position:absolute;bottom:20px;left:0;right:0;padding:0 90px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-d)}
+.ft-n{background:rgba(255,255,255,0.45);backdrop-filter:blur(10px);border:1px solid var(--border);padding:4px 14px;border-radius:20px;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+
+.rv{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.22,1,.36,1)}.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.15s}.d2{transition-delay:.3s}.d3{transition-delay:.45s}.d4{transition-delay:.6s}.d5{transition-delay:.75s}
+.step{opacity:0;transform:translateY(20px) scale(.97);transition:all .5s cubic-bezier(.22,1,.36,1);pointer-events:none}.step.shown{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;background:rgba(255,255,255,0.5);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--text-m);text-decoration:none;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer}
+.chip:hover{background:rgba(255,255,255,0.7);color:var(--text);transform:translateY(-1px)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+
+.timer{font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--pri);text-align:center}
+.tbtn{padding:10px 24px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);color:var(--pri);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.tbtn:hover{background:rgba(255,255,255,0.6)}
+
+.wb{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.45);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:30px;padding:8px 22px;font-size:14px;font-weight:600;color:var(--pri);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;box-shadow:var(--shadow)}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--pri),#EC4899);z-index:200;transition:width .4s ease-out;border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(124,58,237,0.3)}
+
+.kb-hint{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:8px;padding:8px 20px;border-radius:20px;background:rgba(255,255,255,0.5);backdrop-filter:blur(16px);border:1px solid var(--border);font-size:13px;color:var(--text-d);box-shadow:var(--shadow);animation:fadeHint 6s ease-in-out forwards}
+@keyframes fadeHint{0%{opacity:0}10%{opacity:1}70%{opacity:1}100%{opacity:0;pointer-events:none}}
+
+.fs{position:fixed;bottom:24px;right:24px;z-index:100;width:44px;height:44px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.4);backdrop-filter:blur(20px);color:var(--pri);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:var(--shadow)}
+.fs:hover{background:rgba(255,255,255,0.6)}
+.dm{position:fixed;bottom:24px;right:76px;z-index:100;width:44px;height:44px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.4);backdrop-filter:blur(20px);color:var(--pri);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:var(--shadow)}
+.dm:hover{background:rgba(255,255,255,0.6)}
+
+/* Blockquote style */
+.bq{border-left:4px solid var(--pri);padding:20px 28px;border-radius:0 var(--R) var(--R) 0;background:rgba(124,58,237,0.04);margin:16px 0}
+
+/* LinkedIn post card */
+.li-card{background:rgba(255,255,255,0.7);border:1px solid rgba(148,163,184,0.3);border-radius:16px;padding:20px;text-align:left}
+.li-card .li-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.li-card .li-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pri),#EC4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0}
+.li-card .li-name{font-size:15px;font-weight:700;color:var(--text)}
+.li-card .li-title{font-size:12px;color:var(--text-d)}
+.li-card .li-body{font-size:14px;color:var(--text-m);line-height:1.65}
+.li-card .li-engagement{display:flex;gap:16px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(148,163,184,0.15);font-size:12px;color:var(--text-d)}
+
+/* Dark mode */
+body.dark{--bg:#0F1117;--surface:rgba(30,33,45,0.72);--border:rgba(255,255,255,0.1);--text:#E5E7EB;--text-m:rgba(229,231,235,0.65);--text-d:rgba(229,231,235,0.35);--shadow:0 8px 32px rgba(0,0,0,0.3);--shadow-lg:0 20px 60px rgba(0,0,0,0.4)}
+body.dark .g::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),rgba(180,200,255,0.06),transparent)}
+body.dark .chip{background:rgba(30,33,45,0.6);border-color:rgba(255,255,255,0.1);color:var(--text-m)}
+body.dark .tbtn{background:rgba(30,33,45,0.5);border-color:rgba(255,255,255,0.1);color:#A78BFA}
+body.dark .ft-n{background:rgba(30,33,45,0.6);border-color:rgba(255,255,255,0.08)}
+body.dark .wb{background:rgba(30,33,45,0.6);border-color:rgba(255,255,255,0.08)}
+body.dark .dm,.dark .fs{background:rgba(30,33,45,0.6);color:#A78BFA}
+body.dark .li-card{background:rgba(30,33,45,0.6);border-color:rgba(255,255,255,0.08)}
+
+/* Print */
+@media print{
+    body{scroll-snap-type:none!important;overflow:visible!important;height:auto!important;background:#fff!important}
+    .slide{height:auto!important;min-height:auto!important;scroll-snap-align:none!important;page-break-after:always;page-break-inside:avoid;padding:40px 60px!important;display:flex!important;flex-direction:column!important}
+    .nav-dots,.fs,.dm,.kb-hint,.progress-bar,.tbtn,button:not([type]),iframe{display:none!important}
+    .rv,.step{opacity:1!important;transform:none!important}
+    .orb{display:none!important}
+    .g{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(240,244,250,0.5)!important;border:1px solid #ddd!important;box-shadow:none!important}
+    .g::before{display:none!important}
+    .gx,.gx-b,.gx-t,.gx-a,.gx-g{-webkit-text-fill-color:initial!important;background:none!important}
+    .gx{color:#7C3AED!important}.gx-b{color:#2563EB!important}.gx-t{color:#0D9488!important}.gx-a{color:#D97706!important}.gx-g{color:#059669!important}
+    @page{margin:0.5in;size:landscape}
+}
+
+@media(max-width:900px){.slide{padding:30px 24px}.ft{padding:0 24px}.nav-dots{right:12px}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<button class="fs" onclick="toggleFullscreen()" title="Fullscreen"><i data-lucide="maximize" style="width:20px;height:20px"></i></button>
+<button class="dm" onclick="toggleDark()" title="Dark mode"><i data-lucide="moon" style="width:20px;height:20px" id="dmIcon"></i></button>
+<div class="kb-hint"><i data-lucide="arrow-right" style="width:14px;height:14px"></i> Arrow keys to navigate &middot; <strong>?</strong> help</div>
+
+<div class="kb-overlay" id="kbOverlay" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+    <div class="g" style="max-width:420px;width:90%">
+        <div style="font-size:20px;font-weight:700;margin-bottom:16px">Shortcuts</div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px">
+            <span style="padding:3px 10px;border-radius:6px;background:rgba(124,58,237,0.1);color:var(--pri);font-weight:700;text-align:center;font-size:12px">&rarr; / Space</span><span style="color:var(--text-m)">Next</span>
+            <span style="padding:3px 10px;border-radius:6px;background:rgba(124,58,237,0.1);color:var(--pri);font-weight:700;text-align:center;font-size:12px">&larr;</span><span style="color:var(--text-m)">Previous</span>
+            <span style="padding:3px 10px;border-radius:6px;background:rgba(124,58,237,0.1);color:var(--pri);font-weight:700;text-align:center;font-size:12px">F</span><span style="color:var(--text-m)">Fullscreen</span>
+            <span style="padding:3px 10px;border-radius:6px;background:rgba(124,58,237,0.1);color:var(--pri);font-weight:700;text-align:center;font-size:12px">D</span><span style="color:var(--text-m)">Dark mode</span>
+            <span style="padding:3px 10px;border-radius:6px;background:rgba(124,58,237,0.1);color:var(--pri);font-weight:700;text-align:center;font-size:12px">?</span><span style="color:var(--text-m)">This help</span>
+        </div>
+    </div>
+</div>
+
+<!-- ━━━ SLIDE 1 — COVER ━━━ -->
+<div class="slide" data-slide="1" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div class="orb orb-p" style="width:500px;height:500px;top:-120px;right:-100px;animation-delay:-3s"></div>
+    <div class="orb orb-pk" style="width:400px;height:400px;bottom:-80px;left:-60px;animation-delay:-10s"></div>
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 40% 50%,rgba(124,58,237,0.05) 0%,transparent 60%)">
+        <img src="img/bas-cover.png" alt="" class="rv" style="width:88%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 60px rgba(124,58,237,0.15))">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 50%,var(--bg) 95%);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,var(--bg) 95%);pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:20%;background:linear-gradient(180deg,var(--bg) 0%,transparent 100%);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,transparent 40%,var(--bg) 90%);pointer-events:none;opacity:0.4"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 70px;text-align:left">
+        <div style="font-size:15px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--pri);margin-bottom:16px" class="rv">IE 5374 — Storytelling with Data</div>
+        <h1 style="font-size:76px;font-weight:800;line-height:1.05" class="rv d1">Be a<br><span class="gx">Storyteller</span></h1>
+        <p style="font-size:22px;color:var(--text-m);margin-top:20px;font-weight:300;line-height:1.5" class="rv d2">How the best leaders, founders, and thinkers<br>use stories to move people</p>
+        <div style="display:flex;gap:14px;margin-top:36px" class="rv d3">
+            <span class="g" style="padding:10px 28px;font-size:15px;font-weight:500;color:var(--pri)">Workshop + Discussion</span>
+            <span class="g g-amber" style="padding:10px 28px;font-size:15px;font-weight:500;color:var(--amber)">~60 minutes</span>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">1 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 2 — WHY STORIES WIN (SCIENCE) ━━━ -->
+<div class="slide" data-slide="2" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center">
+    <div style="display:flex;align-items:center;justify-content:center;padding:60px;position:relative">
+        <div class="g rv" style="padding:24px;max-width:400px;width:100%;background:radial-gradient(ellipse at 50% 40%,rgba(124,58,237,0.06) 0%,var(--surface) 70%)">
+            <img src="img/bas-brain.png" alt="" style="width:100%;height:340px;object-fit:contain;display:block">
+        </div>
+    </div>
+    <div style="padding:80px 70px">
+        <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--pri)" class="rv">THE NEUROSCIENCE</div>
+        <h2 style="font-size:52px;font-weight:700;margin:12px 0 32px" class="rv d1">Your Brain on <span class="gx">Stories</span></h2>
+        <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="g step" style="padding:20px 24px;display:flex;align-items:center;gap:16px">
+                <div style="font-size:36px;font-weight:800;color:var(--pri);min-width:80px;text-align:center">22x</div>
+                <div><div style="font-size:16px;font-weight:600">More memorable than facts</div><div style="font-size:13px;color:var(--text-d)">Stanford / Jennifer Aaker</div></div>
+            </div>
+            <div class="g g-pri step" style="padding:20px 24px;display:flex;align-items:center;gap:16px">
+                <div style="font-size:28px;min-width:80px;text-align:center">🧪</div>
+                <div><div style="font-size:16px;font-weight:600">Oxytocin release — the trust chemical</div><div style="font-size:13px;color:var(--text-d)">Paul Zak, Neuroeconomics Lab</div></div>
+            </div>
+            <div class="g g-blue step" style="padding:20px 24px;display:flex;align-items:center;gap:16px">
+                <div style="font-size:28px;min-width:80px;text-align:center">🧠</div>
+                <div><div style="font-size:16px;font-weight:600">Neural coupling — your brain syncs with the speaker's</div><div style="font-size:13px;color:var(--text-d)">Uri Hasson, Princeton</div></div>
+            </div>
+            <div class="g g-amber step" style="padding:20px 24px;display:flex;align-items:center;gap:16px">
+                <div style="font-size:28px;min-width:80px;text-align:center">💡</div>
+                <div><div style="font-size:16px;font-weight:600">Cortisol + dopamine = attention + memory</div><div style="font-size:13px;color:var(--text-d)">Stories activate 7 brain regions vs. 2 for data</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">2 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 4 — CEOs WHO TELL STORIES ━━━ -->
+<div class="slide" data-slide="3" style="align-items:center;text-align:center">
+    <div class="orb orb-b" style="width:400px;height:400px;bottom:-80px;left:-80px;animation-delay:-6s"></div>
+    <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--teal)" class="rv">LEADERS WHO LEAD WITH STORY</div>
+    <h2 style="font-size:52px;font-weight:700;margin:12px 0 40px" class="rv d1">CEOs Don't Pitch. They <span class="gx-t">Tell Stories</span>.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;max-width:1050px;width:100%">
+        <div class="g step" style="padding:28px;text-align:left">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0078D4,#00BCF2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.25)">SN</div>
+                <div><div style="font-size:17px;font-weight:700">Satya Nadella</div><div style="font-size:12px;color:var(--text-d)">CEO, Microsoft</div></div>
+            </div>
+            <div class="bq" style="border-color:#0078D4;background:rgba(0,120,212,0.04)">
+                <p style="font-size:14px;color:var(--text-m);line-height:1.6;font-style:italic">"I opened my first keynote with the story of my son Zain, who has cerebral palsy. It taught me empathy — the heart of Microsoft's transformation."</p>
+            </div>
+            <div style="font-size:13px;color:var(--text-d);margin-top:12px">His story reframed Microsoft's culture from "know-it-all" to "learn-it-all"</div>
+            <a class="chip" href="https://www.youtube.com/watch?v=EvGOlAkLSLw" target="_blank" style="font-size:11px;margin-top:12px"><i data-lucide="play-circle" style="width:11px;height:11px"></i> Watch keynote</a>
+        </div>
+        <div class="g g-amber step" style="padding:28px;text-align:left">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#D97706,#F59E0B);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(217,119,6,0.25)">SB</div>
+                <div><div style="font-size:17px;font-weight:700">Sara Blakely</div><div style="font-size:12px;color:var(--text-d)">Founder, Spanx</div></div>
+            </div>
+            <div class="bq" style="border-color:var(--amber);background:rgba(217,119,6,0.04)">
+                <p style="font-size:14px;color:var(--text-m);line-height:1.6;font-style:italic">"I cut the feet off my pantyhose, wore them under white pants, and thought: this is a billion-dollar idea. I was selling fax machines door-to-door."</p>
+            </div>
+            <div style="font-size:13px;color:var(--text-d);margin-top:12px">$5K &rarr; youngest self-made female billionaire. The pantyhose story is in every interview.</div>
+        </div>
+        <div class="g g-teal step" style="padding:28px;text-align:left">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FF5A5F,#FC642D);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(255,90,95,0.25)">BC</div>
+                <div><div style="font-size:17px;font-weight:700">Brian Chesky</div><div style="font-size:12px;color:var(--text-d)">Co-founder, Airbnb</div></div>
+            </div>
+            <div class="bq" style="border-color:#FF5A5F;background:rgba(255,90,95,0.04)">
+                <p style="font-size:14px;color:var(--text-m);line-height:1.6;font-style:italic">"We couldn't pay rent. A design conference was coming to SF. We bought 3 air mattresses and made breakfast for strangers. That was Airbnb."</p>
+            </div>
+            <div style="font-size:13px;color:var(--text-d);margin-top:12px">The 3 air mattresses story is in their S-1 filing and every pitch since.</div>
+        </div>
+    </div>
+    <div class="ft"><span class="ft-n">3 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 3 — WATCH: TED TALK ━━━ -->
+<div class="slide" data-slide="4" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch">
+    <!-- Left — full-height photo + play overlay -->
+    <a href="https://www.youtube.com/watch?v=D9Ihs241zeg" target="_blank" style="display:block;position:relative;overflow:hidden;cursor:pointer;text-decoration:none">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Chimamanda_Ngozi_Adichie_9374.JPG" alt="Chimamanda Ngozi Adichie" class="rv" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(0.8) contrast(1.05)">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.6) 100%);pointer-events:none"></div>
+        <!-- Play button -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(220,38,38,0.9);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 40px rgba(220,38,38,0.4);backdrop-filter:blur(8px)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="8,5 20,12 8,19"/></svg>
+            </div>
+        </div>
+        <!-- Bottom info -->
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:28px 32px;color:white">
+            <div style="font-size:22px;font-weight:700;margin-bottom:4px">Chimamanda Ngozi Adichie</div>
+            <div style="font-size:14px;opacity:0.8">TED Global &middot; 28M+ views &middot; 18 min</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+                <span style="padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white">Watch on YouTube</span>
+                <span style="padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;background:rgba(220,38,38,0.6);backdrop-filter:blur(8px);border:1px solid rgba(220,38,38,0.3);color:white">TED.com</span>
+            </div>
+        </div>
+    </a>
+    <div style="padding:80px 70px">
+        <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--red)" class="rv">WATCH + DISCUSS</div>
+        <h2 style="font-size:48px;font-weight:700;margin:12px 0 28px" class="rv d1">The Danger of a <span style="color:var(--red)">Single Story</span></h2>
+        <p style="font-size:18px;color:var(--text-m);line-height:1.6;margin-bottom:28px" class="rv d2">One of the most-watched TED talks ever. She doesn't open with data. She opens with: <em>"I'm a storyteller. And I would like to tell you a few personal stories..."</em></p>
+        <div class="g g-red rv d3" style="padding:24px">
+            <div style="font-size:14px;font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:12px">AFTER WATCHING — DISCUSS</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:17px;color:var(--text-m)">
+                <span>How did she hook you in the first minute?</span>
+                <span>Where did you feel tension?</span>
+                <span>What changed in <em>you</em> by the end?</span>
+            </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:20px" class="rv d4">
+            <div style="font-size:13px;font-weight:600;color:var(--text-d);letter-spacing:1px">DISCUSSION</div>
+            <div class="timer" id="timer3" style="font-size:32px;color:var(--red)">05:00</div>
+            <button class="tbtn" onclick="startTimer('timer3',300)" style="padding:6px 16px;font-size:13px;color:var(--red)">Start</button>
+            <button class="tbtn" onclick="pauseTimer('timer3')" style="padding:6px 16px;font-size:13px">Pause</button>
+            <button class="tbtn" onclick="resetTimer('timer3',300)" style="padding:6px 16px;font-size:13px">Reset</button>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">4 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 5 — MOHAMMED QAHTANI ━━━ -->
+<div class="slide" data-slide="5" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch">
+    <!-- Left — full-height image + play overlay -->
+    <a href="https://www.youtube.com/watch?v=Iqq1roF4C8s" target="_blank" style="display:block;position:relative;overflow:hidden;cursor:pointer;text-decoration:none">
+        <img src="img/bas-qahtani.png" alt="Mohammed Qahtani on stage" class="rv" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85)">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.65) 100%);pointer-events:none"></div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+            <div style="width:80px;height:80px;border-radius:50%;background:rgba(124,58,237,0.9);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 40px rgba(124,58,237,0.4);backdrop-filter:blur(8px)">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="8,5 20,12 8,19"/></svg>
+            </div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:28px 32px;color:white">
+            <div style="font-size:22px;font-weight:700;margin-bottom:4px">Mohammed Qahtani</div>
+            <div style="font-size:14px;opacity:0.8">2015 Toastmasters World Champion &middot; 7 min</div>
+            <span style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:6px 16px;border-radius:16px;font-size:13px;font-weight:600;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white"><i data-lucide="play-circle" style="width:14px;height:14px"></i> Watch on YouTube</span>
+        </div>
+    </a>
+    <div style="padding:70px 70px">
+        <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--pri)" class="rv">LET'S WATCH THIS TOGETHER</div>
+        <h2 style="font-size:48px;font-weight:700;margin:12px 0 24px" class="rv d1">The Power of <span class="gx">Words</span></h2>
+        <p style="font-size:18px;color:var(--text-m);line-height:1.7;margin-bottom:24px" class="rv d2">A Saudi engineer walks on stage at the Toastmasters World Championship. He pulls out a cigarette. The audience freezes.</p>
+        <div class="bq rv d3" style="border-color:var(--pri);background:rgba(124,58,237,0.04)">
+            <p style="font-size:20px;font-style:italic;color:var(--text);line-height:1.6">"Some of you are already judging me... You looked at me, and in a fraction of a second, you decided something about me. That's the power of words."</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px" class="rv d4">
+            <div class="g" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="eye" style="width:22px;height:22px;color:var(--pri);flex-shrink:0"></i>
+                <span style="font-size:15px;color:var(--text-m)"><strong style="color:var(--text)">Visual shock</strong> — the cigarette grabs every eye in the room</span>
+            </div>
+            <div class="g g-pri" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="heart" style="width:22px;height:22px;color:var(--pri);flex-shrink:0"></i>
+                <span style="font-size:15px;color:var(--text-m)"><strong style="color:var(--text)">Emotional pivot</strong> — from smoking to the real weapon: words</span>
+            </div>
+            <div class="g" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="trophy" style="width:22px;height:22px;color:var(--amber);flex-shrink:0"></i>
+                <span style="font-size:15px;color:var(--text-m)"><strong style="color:var(--text)">Result</strong> — beat 30,000 speakers from 136 countries</span>
+            </div>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">5 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 6 — WORKSHOP: YOUR TOPIC ━━━ -->
+<div class="slide" data-slide="6" style="align-items:center;text-align:center">
+    <div class="orb orb-p" style="width:400px;height:400px;top:-80px;right:-80px;animation-delay:-6s"></div>
+    <div class="wb rv"><i data-lucide="message-circle" style="width:18px;height:18px"></i> QUICK EXERCISE</div>
+    <h2 style="font-size:52px;font-weight:700;margin-bottom:12px" class="rv d1">You Have a <span class="gx-a">Dry Topic</span>.</h2>
+    <h2 style="font-size:52px;font-weight:700;margin-bottom:36px" class="rv d2">How Would You <span class="gx">Start</span>?</h2>
+    <div class="g g-amber rv d3" style="max-width:700px;padding:32px;text-align:center">
+        <div style="font-size:14px;font-weight:700;letter-spacing:2px;color:var(--amber);margin-bottom:16px">SCENARIO</div>
+        <p style="font-size:22px;color:var(--text);line-height:1.6;font-weight:400">You need to present about <strong>AI-powered bottleneck detection in supply chains</strong> to a room of business executives. How do you hook them in 30 seconds?</p>
+    </div>
+    <p style="font-size:18px;color:var(--text-m);margin-top:24px" class="rv d4">Discuss with your neighbor — 3 minutes</p>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:20px" class="rv d5">
+        <div class="timer" id="timer4" style="font-size:48px;color:var(--amber)">03:00</div>
+        <button class="tbtn" onclick="startTimer('timer4',180)" style="color:var(--amber)">Start</button>
+        <button class="tbtn" onclick="pauseTimer('timer4')">Pause</button>
+        <button class="tbtn" onclick="resetTimer('timer4',180)">Reset</button>
+    </div>
+    <div class="ft"><span class="ft-n">6 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 7 — THE SHIP (PURE VISUAL + STATS) ━━━ -->
+<div class="slide" data-slide="7" style="padding:0;position:relative">
+    <!-- Full-bleed image -->
+    <img src="img/bas-suez-real.jpg" alt="Ever Given stuck in Suez Canal" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.7) contrast(1.1)">
+    <!-- Dark overlay -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.5) 60%,rgba(0,0,0,0.75) 100%);pointer-events:none"></div>
+    <!-- Content over image -->
+    <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;padding:0 90px 100px">
+        <div style="font-size:14px;font-weight:600;letter-spacing:4px;color:#FCD34D;margin-bottom:12px" class="rv">MARCH 23, 2021 — SUEZ CANAL, EGYPT</div>
+        <h2 style="font-size:64px;font-weight:800;color:white;line-height:1.1;margin-bottom:28px" class="rv d1">One Ship.<br>The World <span style="color:#FCD34D">Stopped</span>.</h2>
+        <div style="display:flex;gap:40px;margin-bottom:32px">
+            <div class="step"><div style="font-size:48px;font-weight:800;color:#FCD34D">$60B</div><div style="font-size:14px;color:rgba(255,255,255,0.7)">estimated total cost</div></div>
+            <div class="step"><div style="font-size:48px;font-weight:800;color:#FCD34D">12%</div><div style="font-size:14px;color:rgba(255,255,255,0.7)">of global trade blocked</div></div>
+            <div class="step"><div style="font-size:48px;font-weight:800;color:#FCD34D">6</div><div style="font-size:14px;color:rgba(255,255,255,0.7)">days stuck</div></div>
+            <div class="step"><div style="font-size:48px;font-weight:800;color:#FCD34D">400+</div><div style="font-size:14px;color:rgba(255,255,255,0.7)">ships waiting</div></div>
+        </div>
+        <p style="font-size:20px;color:rgba(255,255,255,0.8);max-width:600px" class="rv d3">The <em>Ever Given</em> — a 1,300-foot container ship — ran aground and blocked one of the world's most critical trade routes.</p>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n" style="background:rgba(0,0,0,0.4);color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.15)">7 / 14</span><span style="color:rgba(255,255,255,0.5)">Prof. Mohammad Dehghani</span><span style="color:rgba(255,255,255,0.5)">Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 8 — BOTTLENECKS ARE EVERYWHERE ━━━ -->
+<div class="slide" data-slide="8" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;height:100%;background:radial-gradient(ellipse at 40% 50%,rgba(217,119,6,0.05) 0%,var(--bg) 60%)">
+        <img src="img/bas-assembly-bottleneck.png" alt="" class="rv" style="width:90%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 60px rgba(217,119,6,0.12))">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,var(--bg) 98%);pointer-events:none"></div>
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,transparent 45%,var(--bg) 90%);pointer-events:none;opacity:0.3"></div>
+    </div>
+    <div style="padding:50px 60px;overflow:hidden">
+        <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--amber)" class="rv">THE TRANSITION</div>
+        <h2 style="font-size:48px;font-weight:700;margin:12px 0 20px" class="rv d1">Bottlenecks Are <span class="gx-a">Everywhere</span></h2>
+        <p style="font-size:17px;color:var(--text-m);line-height:1.6;margin-bottom:20px" class="rv d2">The Suez Canal was one bottleneck. But they're hiding in plain sight:</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="g step" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="factory" style="width:24px;height:24px;color:var(--amber);flex-shrink:0"></i>
+                <div><div style="font-size:15px;font-weight:700">In your factory</div><div style="font-size:13px;color:var(--text-d)">One slow machine holds up the entire line</div></div>
+            </div>
+            <div class="g g-red step" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="heart-pulse" style="width:24px;height:24px;color:var(--red);flex-shrink:0"></i>
+                <div><div style="font-size:15px;font-weight:700">In your hospital</div><div style="font-size:13px;color:var(--text-d)">ER wait times spike from one overcrowded dept</div></div>
+            </div>
+            <div class="g g-blue step" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="code" style="width:24px;height:24px;color:var(--blue);flex-shrink:0"></i>
+                <div><div style="font-size:15px;font-weight:700">In your code</div><div style="font-size:13px;color:var(--text-d)">One slow API call makes the whole app lag</div></div>
+            </div>
+            <div class="g g-teal step" style="padding:14px 20px;display:flex;align-items:center;gap:14px">
+                <i data-lucide="truck" style="width:24px;height:24px;color:var(--teal);flex-shrink:0"></i>
+                <div><div style="font-size:15px;font-weight:700">In your supply chain</div><div style="font-size:13px;color:var(--text-d)">One delayed shipment cascades across continents</div></div>
+            </div>
+        </div>
+        <div class="g g-amber step" style="padding:14px 20px;margin-top:16px;text-align:center">
+            <p style="font-size:18px;font-weight:600;color:var(--amber)">"Now imagine if we could <em>predict</em> them..."</p>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">8 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 9 — THE APP (SOLUTION) ━━━ -->
+<div class="slide" data-slide="9" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;height:100%;background:radial-gradient(ellipse at 40% 50%,rgba(37,99,235,0.05) 0%,var(--bg) 60%)">
+        <img src="img/bas-bottleneck-ai.png" alt="" style="width:92%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 60px rgba(37,99,235,0.15))">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--bg) 98%);pointer-events:none"></div>
+    </div>
+    <div style="padding:70px 70px">
+        <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--blue)" class="rv">THE SOLUTION</div>
+        <h2 style="font-size:44px;font-weight:700;margin:12px 0 28px" class="rv d1">AI That <span class="gx-b">Sees</span> Bottlenecks</h2>
+        <div style="display:flex;flex-direction:column;gap:14px" class="rv d2">
+            <div class="g step" style="padding:18px 24px;display:flex;align-items:center;gap:16px">
+                <i data-lucide="scan-line" style="width:28px;height:28px;color:var(--red);flex-shrink:0"></i>
+                <div><div style="font-size:17px;font-weight:700">Detect</div><div style="font-size:14px;color:var(--text-d)">Real-time monitoring of every station on the line</div></div>
+            </div>
+            <div class="g g-amber step" style="padding:18px 24px;display:flex;align-items:center;gap:16px">
+                <i data-lucide="alert-triangle" style="width:28px;height:28px;color:var(--amber);flex-shrink:0"></i>
+                <div><div style="font-size:17px;font-weight:700">Predict</div><div style="font-size:14px;color:var(--text-d)">Forecasts where the next bottleneck will form — before it happens</div></div>
+            </div>
+            <div class="g g-green step" style="padding:18px 24px;display:flex;align-items:center;gap:16px">
+                <i data-lucide="check-circle-2" style="width:28px;height:28px;color:var(--green);flex-shrink:0"></i>
+                <div><div style="font-size:17px;font-weight:700">Resolve</div><div style="font-size:14px;color:var(--text-d)">Recommends re-routing, staffing, or machine adjustments</div></div>
+            </div>
+        </div>
+        <div class="g g-blue step" style="padding:20px 24px;margin-top:24px;text-align:center">
+            <p style="font-size:18px;color:var(--text-m)">The audience was <strong style="color:var(--blue)">already invested</strong> from the Suez story.</p>
+            <p style="font-size:18px;color:var(--text-m);margin-top:4px">The app just made it <strong style="color:var(--blue)">personal</strong>.</p>
+        </div>
+    </div>
+    <div class="ft" style="padding:0 60px"><span class="ft-n">9 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 9 — THE HOOK ━━━ -->
+<div class="slide" data-slide="10" style="align-items:center;text-align:center">
+    <div class="orb orb-pk" style="width:400px;height:400px;bottom:-80px;right:-60px;animation-delay:-7s"></div>
+    <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--pri)" class="rv">THE FIRST 7 SECONDS</div>
+    <h2 style="font-size:60px;font-weight:700;margin:12px 0 40px" class="rv d1">The <span class="gx">Hook</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:24px;align-items:center;max-width:900px;width:100%">
+        <div class="g g-red rv d2" style="padding:32px;text-align:left;position:relative">
+            <div style="position:absolute;top:-14px;left:24px;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--red);background:var(--bg)">BORING</div>
+            <div style="font-size:17px;color:var(--text-m);line-height:2;margin-top:8px">
+                "Hi, my name is..."<br>
+                "So today I'll talk about..."<br>
+                "Let me give some background..."
+            </div>
+        </div>
+        <div style="text-align:center"><i data-lucide="arrow-right" style="width:32px;height:32px;color:#cbd5e1"></i></div>
+        <div class="g g-green rv d3" style="padding:32px;text-align:left;position:relative">
+            <div style="position:absolute;top:-14px;left:24px;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--green);background:var(--bg)">MAGNETIC</div>
+            <div style="font-size:17px;color:var(--text-m);line-height:2;margin-top:8px">
+                <strong style="color:var(--text)">"What if I told you..."</strong><br>
+                <strong style="color:var(--text)">"Last Tuesday at 2 AM..."</strong><br>
+                <strong style="color:var(--text)">"97% of you will fail at this."</strong>
+            </div>
+        </div>
+    </div>
+    <div class="g step" style="max-width:700px;margin-top:32px;padding:24px 32px;text-align:center">
+        <p style="font-size:20px"><strong class="gx">7 seconds.</strong> That's how long you have before your audience decides you're worth listening to.</p>
+        <p style="font-size:13px;color:var(--text-d);margin-top:6px">Microsoft Attention Study, 2015</p>
+    </div>
+    <div class="ft"><span class="ft-n">10 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 7 — WORKSHOP 1: WRITE ON PAPER ━━━ -->
+<div class="slide" data-slide="11" style="display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:center">
+    <div class="orb orb-p" style="width:350px;height:350px;bottom:-80px;left:-80px;animation-delay:-7s"></div>
+    <div>
+        <div class="wb rv"><i data-lucide="pencil" style="width:18px;height:18px"></i> WORKSHOP 1</div>
+        <h2 style="font-size:48px;font-weight:700;margin-bottom:20px" class="rv d1">Write Your <span class="gx">Micro-Story</span></h2>
+        <p style="font-size:20px;color:var(--text-m);line-height:1.6;margin-bottom:24px" class="rv d2">Grab a piece of paper. Write <strong style="color:var(--text)">3 sentences</strong>:</p>
+        <div class="g g-pri rv d3" style="padding:24px">
+            <div style="font-size:14px;font-weight:700;letter-spacing:2px;color:var(--pri);margin-bottom:10px">YOUR PROMPT</div>
+            <p style="font-size:20px;font-style:italic;color:var(--text);line-height:1.6">"A moment that changed how you see a tool, a person, or a problem."</p>
+        </div>
+        <div class="g rv d4" style="padding:18px 24px;margin-top:16px">
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:16px;color:var(--text-m)">
+                <span><strong style="color:var(--text)">Sentence 1:</strong> Set the scene — where, when, who</span>
+                <span><strong style="color:var(--text)">Sentence 2:</strong> The unexpected thing that happened</span>
+                <span><strong style="color:var(--text)">Sentence 3:</strong> How it changed you</span>
+            </div>
+        </div>
+        <p style="font-size:16px;color:var(--text-d);margin-top:16px" class="rv d5">After: 2-3 volunteers read theirs aloud</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center">
+        <img src="img/bas-workshop-write.png" alt="" class="rv" style="width:100%;max-width:300px;height:auto;object-fit:contain;filter:drop-shadow(0 16px 48px rgba(124,58,237,0.12));border-radius:20px">
+        <div class="g g-pri rv d2" style="text-align:center;padding:32px 28px;width:100%">
+            <div style="font-size:14px;font-weight:700;letter-spacing:3px;color:var(--pri);margin-bottom:16px">TIMER</div>
+            <div class="timer" id="timer1">05:00</div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:20px">
+                <button class="tbtn" onclick="startTimer('timer1',300)">Start</button>
+                <button class="tbtn" onclick="pauseTimer('timer1')">Pause</button>
+                <button class="tbtn" onclick="resetTimer('timer1',300)">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="ft"><span class="ft-n">11 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 8 — WORKSHOP 2: PITCH YOUR APP ━━━ -->
+<div class="slide" data-slide="12" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+    <div class="orb orb-b" style="width:350px;height:350px;top:-60px;right:-60px;animation-delay:-9s"></div>
+    <div>
+        <div class="wb rv"><i data-lucide="users" style="width:18px;height:18px"></i> WORKSHOP 2</div>
+        <h2 style="font-size:44px;font-weight:700;margin-bottom:20px" class="rv d1">Pitch Your App<br>as a <span class="gx">Story</span></h2>
+        <p style="font-size:18px;color:var(--text-m);line-height:1.6;margin-bottom:24px" class="rv d2">Think of an app idea. Now pitch it <strong style="color:var(--text)">as a story, not a feature list.</strong></p>
+        <div class="g rv d3" style="padding:20px 24px">
+            <div style="font-size:14px;font-weight:700;letter-spacing:2px;color:var(--pri);margin-bottom:12px">YOUR 60-SECOND PITCH</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:16px;color:var(--text-m)">
+                <span><strong style="color:var(--text)">Hook</strong> — "What if..." or "Picture this..." (10 sec)</span>
+                <span><strong style="color:var(--text)">The person</strong> — who has this problem? Name them. (15 sec)</span>
+                <span><strong style="color:var(--text)">The struggle</strong> — what's broken today? (15 sec)</span>
+                <span><strong style="color:var(--text)">Your app</strong> — what happens when they use it? (15 sec)</span>
+                <span><strong style="color:var(--text)">The "after"</strong> — how is their life different? (5 sec)</span>
+            </div>
+        </div>
+        <p style="font-size:16px;color:var(--text-d);margin-top:16px" class="rv d4">Groups of 3 &middot; 1 min each &middot; Listener gives 1-word reaction</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center">
+        <img src="img/bas-workshop-pitch.png" alt="" class="rv" style="width:100%;max-width:320px;height:auto;object-fit:contain;filter:drop-shadow(0 16px 48px rgba(37,99,235,0.12));border-radius:20px">
+        <div class="g g-blue rv d2" style="text-align:center;padding:32px 28px;width:100%">
+            <div style="font-size:14px;font-weight:700;letter-spacing:3px;color:var(--blue);margin-bottom:16px">TIMER</div>
+            <div class="timer" id="timer2" style="color:var(--blue)">10:00</div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:20px">
+                <button class="tbtn" onclick="startTimer('timer2',600)" style="color:var(--blue)">Start</button>
+                <button class="tbtn" onclick="pauseTimer('timer2')" style="color:var(--blue)">Pause</button>
+                <button class="tbtn" onclick="resetTimer('timer2',600)" style="color:var(--blue)">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="ft"><span class="ft-n">12 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 9 — BEFORE vs AFTER ━━━ -->
+<div class="slide" data-slide="13" style="align-items:center;text-align:center">
+    <div class="orb orb-p" style="width:400px;height:400px;top:-80px;left:-80px;animation-delay:-11s"></div>
+    <div style="font-size:16px;font-weight:600;letter-spacing:4px;color:var(--amber)" class="rv">SEE THE DIFFERENCE</div>
+    <h2 style="font-size:52px;font-weight:700;margin:12px 0 36px" class="rv d1">Same Product. <span class="gx-a">Different Impact.</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:24px;align-items:start;max-width:960px;width:100%">
+        <div class="g g-red rv d2" style="padding:32px;text-align:left;position:relative">
+            <div style="position:absolute;top:-14px;left:24px;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--red);background:var(--bg)">FEATURE DUMP</div>
+            <p style="font-size:17px;color:var(--text-m);line-height:1.8;margin-top:8px">"Our app reduces doctor wait times by 73%. We have 50K users and a 4.8-star rating. We integrate with 200+ insurance providers. Our AI triages symptoms in real time."</p>
+            <div style="margin-top:20px;padding:12px 16px;border-radius:12px;background:rgba(220,38,38,0.06);font-size:14px;color:var(--text-d);text-align:center">😐 "OK, sounds fine. Next slide?"</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;padding-top:60px"><i data-lucide="arrow-right" style="width:28px;height:28px;color:var(--amber)"></i></div>
+        <div class="g g-green rv d3" style="padding:32px;text-align:left;position:relative">
+            <div style="position:absolute;top:-14px;left:24px;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--green);background:var(--bg)">STORY</div>
+            <p style="font-size:17px;color:var(--text-m);line-height:1.8;margin-top:8px">"Last Tuesday at 9 PM, Sarah's 2-year-old spiked a 104° fever. She opened our app, found a pediatrician in 6 minutes, and by 10 PM her son was being treated. No ER. No 3-hour wait. Just a mom and a doctor, connected instantly."</p>
+            <div style="margin-top:20px;padding:12px 16px;border-radius:12px;background:rgba(5,150,105,0.06);font-size:14px;color:var(--green);font-weight:600;text-align:center">😮 "How do I invest?"</div>
+        </div>
+    </div>
+    <div class="g step" style="max-width:600px;margin-top:28px;padding:20px 28px;text-align:center">
+        <p style="font-size:20px"><strong class="gx-a">Same product. Same data.</strong> Only one makes you <em>feel</em> something.</p>
+    </div>
+    <div class="ft"><span class="ft-n">13 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<!-- ━━━ SLIDE 10 — CLOSING ━━━ -->
+<div class="slide" data-slide="14" style="justify-content:center;align-items:center;text-align:center">
+    <div class="orb orb-p" style="width:500px;height:500px;top:-100px;left:-100px;animation-delay:-7s"></div>
+    <div class="orb orb-pk" style="width:400px;height:400px;bottom:-80px;right:-80px;animation-delay:-14s"></div>
+    <img src="img/bas-cover.png" alt="" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:500px;height:500px;object-fit:contain;opacity:0.05;pointer-events:none">
+    <h2 style="font-size:48px;font-weight:700;margin-bottom:36px" class="rv">What You Now <span class="gx">Know</span></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:900px;width:100%">
+        <div class="g step" style="padding:24px;text-align:center">
+            <div style="font-size:36px;margin-bottom:10px">🧠</div>
+            <div style="font-size:17px;font-weight:700;margin-bottom:6px">Stories Rewire Brains</div>
+            <div style="font-size:14px;color:var(--text-m)">22x memorable. Oxytocin. Neural coupling.</div>
+        </div>
+        <div class="g g-pri step" style="padding:24px;text-align:center">
+            <div style="font-size:36px;margin-bottom:10px">⚡</div>
+            <div style="font-size:17px;font-weight:700;margin-bottom:6px">Hook in 7 Seconds</div>
+            <div style="font-size:14px;color:var(--text-m)">Bold question. Vivid scene. Never "Hi my name is."</div>
+        </div>
+        <div class="g g-blue step" style="padding:24px;text-align:center">
+            <div style="font-size:36px;margin-bottom:10px">🚀</div>
+            <div style="font-size:17px;font-weight:700;margin-bottom:6px">People → Features</div>
+            <div style="font-size:14px;color:var(--text-m)">Nadella, Blakely, Chesky. They lead with humans.</div>
+        </div>
+    </div>
+    <div class="g g-pri step" style="max-width:750px;margin-top:36px;padding:28px 32px;display:flex;align-items:center;gap:24px;text-align:left">
+        <img src="img/bas-pullman.jpg" alt="Philip Pullman" style="width:80px;height:80px;border-radius:50%;object-fit:cover;flex-shrink:0;border:3px solid rgba(124,58,237,0.2);box-shadow:0 4px 16px rgba(0,0,0,0.1)">
+        <div>
+            <p style="font-size:22px;font-weight:300;font-style:italic;line-height:1.5">"After nourishment, shelter, and companionship, stories are the thing we need most in the world."</p>
+            <p style="font-size:14px;color:var(--text-d);margin-top:8px">— Philip Pullman, author of <em>His Dark Materials</em></p>
+        </div>
+    </div>
+    <p style="font-size:22px;color:var(--text-m);margin-top:28px;font-weight:300" class="rv d3">Now go tell stories that <strong class="gx">matter</strong>.</p>
+    <div class="ft"><span class="ft-n">14 / 14</span><span>Prof. Mohammad Dehghani</span><span>Northeastern University</span></div>
+</div>
+
+<script>
+lucide.createIcons();
+const slides=document.querySelectorAll('.slide'),navDots=document.getElementById('navDots');
+slides.forEach((s,i)=>{const d=document.createElement('button');d.className='nav-dot';d.addEventListener('click',()=>s.scrollIntoView({behavior:'smooth'}));navDots.appendChild(d)});
+const dots=navDots.querySelectorAll('.nav-dot');
+const pbar=document.getElementById('progressBar');
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=Array.from(slides).indexOf(e.target);dots.forEach((d,j)=>d.classList.toggle('active',j===i));e.target.querySelectorAll('.rv').forEach(el=>el.classList.add('vis'));pbar.style.width=((i+1)/slides.length*100)+'%';history.replaceState(null,null,'#slide-'+(i+1))}})},{threshold:.5});
+slides.forEach(s=>obs.observe(s));
+
+(function(){const h=location.hash.match(/^#slide-(\d+)$/);if(h){const n=parseInt(h[1])-1;if(slides[n])setTimeout(()=>slides[n].scrollIntoView(),100)}})();
+
+function gci(){return Array.from(slides).findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-100&&r.top<window.innerHeight/2})}
+function advS(){const i=gci();if(i<0)return false;const st=slides[i].querySelectorAll('.step:not(.shown)');if(st.length>0){st[0].classList.add('shown');return true}return false}
+
+document.addEventListener('keydown',e=>{
+    if(e.key==='?'||e.key==='/'){e.preventDefault();const o=document.getElementById('kbOverlay');o.style.display=o.style.display==='flex'?'none':'flex';return}
+    if(e.key==='Escape'){document.getElementById('kbOverlay').style.display='none';return}
+    if(e.key==='f'||e.key==='F'){if(!e.target.closest('input,textarea')){e.preventDefault();toggleFullscreen();return}}
+    if(e.key==='d'||e.key==='D'){if(!e.target.closest('input,textarea')){e.preventDefault();toggleDark();return}}
+    const c=gci();
+    if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();if(!advS()){if(c<slides.length-1)slides[c+1].scrollIntoView({behavior:'smooth'})}}
+    if(['ArrowUp','ArrowLeft','Backspace','PageUp'].includes(e.key)){e.preventDefault();if(c>0)slides[c-1].scrollIntoView({behavior:'smooth'})}
+});
+document.addEventListener('click',e=>{if(e.target.closest('a,button,input,.tbtn,.chip,.nav-dot,.fs,.dm,.kb-overlay,.li-card'))return;advS()});
+
+function toggleFullscreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+function toggleDark(){
+    document.body.classList.toggle('dark');
+    const isDark=document.body.classList.contains('dark');
+    localStorage.setItem('bas-dark',isDark?'1':'0');
+    document.getElementById('dmIcon').setAttribute('data-lucide',isDark?'sun':'moon');
+    lucide.createIcons();
+}
+(function(){if(localStorage.getItem('bas-dark')==='1'){document.body.classList.add('dark');document.getElementById('dmIcon').setAttribute('data-lucide','sun');lucide.createIcons()}})();
+
+const timers={};
+function formatTime(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function startTimer(id,t){if(timers[id]?.running)return;const el=document.getElementById(id);if(!timers[id])timers[id]={remaining:t,running:false,interval:null};timers[id].running=true;timers[id].interval=setInterval(()=>{timers[id].remaining--;el.textContent=formatTime(timers[id].remaining);if(timers[id].remaining<=0){clearInterval(timers[id].interval);timers[id].running=false;el.textContent="00:00";el.style.color='#DC2626';let f=0;const fi=setInterval(()=>{el.style.opacity=el.style.opacity==='0.3'?'1':'0.3';if(++f>=10){clearInterval(fi);el.style.opacity='1'}},400)}},1000)}
+function pauseTimer(id){if(timers[id]){clearInterval(timers[id].interval);timers[id].running=false}}
+function resetTimer(id,t){pauseTimer(id);const el=document.getElementById(id);timers[id]={remaining:t,running:false,interval:null};el.textContent=formatTime(t);el.style.color=''}
+</script>
+</body>
+</html>
