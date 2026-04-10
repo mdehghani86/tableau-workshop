@@ -402,7 +402,39 @@ header{
     object-fit:cover;
     border:1px solid var(--border-color);
     box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    cursor:zoom-in;
+    transition:transform .2s ease;
 }
+.mod-img:hover{transform:scale(1.08)}
+
+/* Lightbox */
+.lightbox-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.8);
+    backdrop-filter:blur(8px);
+    z-index:9999;
+    align-items:center;justify-content:center;
+    cursor:zoom-out;
+}
+.lightbox-overlay.active{display:flex}
+.lightbox-overlay img{
+    max-width:90vw;max-height:85vh;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+    object-fit:contain;
+}
+.lightbox-close{
+    position:absolute;top:24px;right:28px;
+    width:40px;height:40px;
+    background:rgba(255,255,255,0.15);
+    border:none;border-radius:50%;
+    color:#fff;font-size:1.4rem;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.3)}
 .mod-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .mod-row.expanded .mod-body{max-height:5000px}
 .mod-body-inner{padding:0 22px 22px 70px}
@@ -854,34 +886,43 @@ header{
     <aside class="sidebar" id="sidebar">
         <div class="sb-title">Workshop Navigation</div>
 
-        <div class="sb-group session1" id="sbg-1">
-            <button class="sb-group-header" onclick="toggleSbGroup('sbg-1')">
+        <div class="sb-group session1" id="sbg-mod1">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-mod1')">
                 <span class="sb-dot"></span>
-                <span>Session 1 · L1</span>
-                <span class="sb-count">15</span>
+                <span>Module 1 · Superstore</span>
                 <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
+            <div class="sb-items">
+                <a class="sb-item" href="#m1" onclick="focusMod('m1')" style="font-weight:700;color:var(--text-primary)">
+                    <span class="sb-label">Session 1 · Getting Started</span>
+                </a>
+            </div>
             <div class="sb-items" id="sbg-1-items"></div>
-        </div>
-
-        <div class="sb-group session2" id="sbg-2">
-            <button class="sb-group-header" onclick="toggleSbGroup('sbg-2')">
-                <span class="sb-dot"></span>
-                <span>Session 1 · L2</span>
-                <span class="sb-count">10</span>
-                <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
+            <div class="sb-items" style="margin-top:8px">
+                <a class="sb-item" href="#m2" onclick="focusMod('m2')" style="font-weight:700;color:var(--text-primary)">
+                    <span class="sb-label">Session 2 · Visual Analytics</span>
+                </a>
+            </div>
             <div class="sb-items" id="sbg-2-items"></div>
         </div>
 
-        <div class="sb-group session3" id="sbg-3">
-            <button class="sb-group-header" onclick="toggleSbGroup('sbg-3')">
+        <div class="sb-group session3" id="sbg-mod2">
+            <button class="sb-group-header" onclick="toggleSbGroup('sbg-mod2')">
                 <span class="sb-dot"></span>
-                <span>Session 2 · L3+L4</span>
-                <span class="sb-count">15</span>
+                <span>Module 2 · Healthcare</span>
                 <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
+            <div class="sb-items">
+                <a class="sb-item" href="#m3" onclick="focusMod('m3')" style="font-weight:700;color:var(--text-primary)">
+                    <span class="sb-label">Session 1 · ER Data Viz</span>
+                </a>
+            </div>
             <div class="sb-items" id="sbg-3-items-l3"></div>
+            <div class="sb-items" style="margin-top:8px">
+                <a class="sb-item" href="#m4" onclick="focusMod('m4')" style="font-weight:700;color:var(--text-primary)">
+                    <span class="sb-label">Session 2 · Maps</span>
+                </a>
+            </div>
             <div class="sb-items" id="sbg-3-items-l4"></div>
         </div>
     </aside>
@@ -904,20 +945,19 @@ header{
         <div class="modules-section">
             <div class="section-label">Session Outline</div>
 
-            <!-- ═══ SESSION 1 · LECTURE 1 ═══ -->
+            <!-- ═══ MODULE 1: GLOBAL SUPERSTORE ═══ -->
             <div class="phase-header session1">
                 <div class="phase-dot"></div>
-                <span>Session 1</span>
-                <span class="phase-count">2 lectures · 24 tasks</span>
-            </div><!-- close Session 1 phase -->
+                <span>Module 1 · Global Superstore</span>
+                <span class="phase-count">2 sessions · 24 tasks</span>
             </div>
 
             <div class="mod-row session1" id="m1">
                 <div class="mod-header" onclick="toggleMod('m1')">
                     <div class="mod-border session1"></div>
-                    <img class="mod-img" src="img/l1_getting_started.png" alt="Getting Started" loading="lazy">
+                    <img class="mod-img" src="img/l1_getting_started.png" alt="Getting Started" loading="lazy" onclick="showLightbox(this.src,event)">
                     <span class="mod-title">
-                        Getting Started with Tableau
+                        Session 1 · Getting Started with Tableau
                         <span class="mod-sub">Load data, plot types, maps, crosstabs, calculations</span>
                     </span>
                     <span class="status-badge ready"><span class="dot"></span>Ready</span>
@@ -938,10 +978,6 @@ header{
                                     <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
                                     <div class="data-info"><div class="data-title">Global Superstore 2025</div><div class="data-meta">XLSX · Orders + Returns + People</div></div>
                                 </a>
-                                <a class="data-card" href="session-1/Tableau%20Agenda_1.xlsx" download>
-                                    <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-                                    <div class="data-info"><div class="data-title">Agenda (original)</div><div class="data-meta">XLSX · TA worksheet</div></div>
-                                </a>
                             </div>
                         </div>
 
@@ -954,19 +990,12 @@ header{
                 </div>
             </div>
 
-            <!-- ═══ SESSION 1 · LECTURE 2 ═══ -->
-            <div class="phase-header session2">
-                <div class="phase-dot"></div>
-                <span>Session 1 · Lecture 2</span>
-                <span class="phase-count">1 lecture · 10 tasks</span>
-            </div>
-
             <div class="mod-row session2" id="m2">
                 <div class="mod-header" onclick="toggleMod('m2')">
                     <div class="mod-border session2"></div>
-                    <img class="mod-img" src="img/l2_visual_analytics.png" alt="Visual Analytics" loading="lazy">
+                    <img class="mod-img" src="img/l2_visual_analytics.png" alt="Visual Analytics" loading="lazy" onclick="showLightbox(this.src,event)">
                     <span class="mod-title">
-                        Visual Analytics
+                        Session 2 · Visual Analytics
                         <span class="mod-sub">Marks, highlights, drill-down, hierarchies, parameters, sets</span>
                     </span>
                     <span class="status-badge ready"><span class="dot"></span>Ready</span>
@@ -1015,19 +1044,19 @@ header{
                 </div>
             </div>
 
-            <!-- ═══ SESSION 2 · LECTURE 3 + 4 ═══ -->
+            <!-- ═══ MODULE 2: HEALTHCARE & MAPS ═══ -->
             <div class="phase-header session3">
                 <div class="phase-dot"></div>
-                <span>Session 2</span>
-                <span class="phase-count">2 lectures · 15 tasks</span>
+                <span>Module 2 · Healthcare &amp; Maps</span>
+                <span class="phase-count">2 sessions · 15 tasks</span>
             </div>
 
             <div class="mod-row session3" id="m3">
                 <div class="mod-header" onclick="toggleMod('m3')">
                     <div class="mod-border session3"></div>
-                    <span class="mod-num">L3</span>
+                    <span class="mod-num">S1</span>
                     <span class="mod-title">
-                        Emergency Department Data Viz
+                        Session 1 · Emergency Department Data Viz
                         <span class="mod-sub">Calculated fields, heatmaps, KPIs, dual-axis charts</span>
                     </span>
                     <span class="status-badge ready"><span class="dot"></span>Ready</span>
@@ -1063,9 +1092,9 @@ header{
             <div class="mod-row session3" id="m4">
                 <div class="mod-header" onclick="toggleMod('m4')">
                     <div class="mod-border session3"></div>
-                    <span class="mod-num">L4</span>
+                    <span class="mod-num">S2</span>
                     <span class="mod-title">
-                        Maps
+                        Session 2 · Maps
                         <span class="mod-sub">Geographic fields, symbol maps, filled maps, map layers</span>
                     </span>
                     <span class="status-badge ready"><span class="dot"></span>Ready</span>
@@ -1444,7 +1473,24 @@ function resetProgress(){
 }
 
 loadProgress();
+
+// Lightbox
+function showLightbox(src,e){
+  e.stopPropagation();
+  const ov=document.getElementById('imgLightbox');
+  ov.querySelector('img').src=src;
+  ov.classList.add('active');
+}
+function closeLightbox(){
+  document.getElementById('imgLightbox').classList.remove('active');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
 </script>
+
+<div class="lightbox-overlay" id="imgLightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img src="" alt="Full size">
+</div>
 
 </body>
 </html>
