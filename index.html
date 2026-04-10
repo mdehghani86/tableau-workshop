@@ -396,6 +396,13 @@ header{
 .mod-chevron svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .mod-row.expanded .mod-chevron{transform:rotate(90deg);color:var(--blue)}
 .mod-row.session2.expanded .mod-chevron{color:var(--teal-dark)}
+.mod-img{
+    width:64px;height:64px;flex-shrink:0;
+    border-radius:12px;
+    object-fit:cover;
+    border:1px solid var(--border-color);
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
 .mod-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .mod-row.expanded .mod-body{max-height:5000px}
 .mod-body-inner{padding:0 22px 22px 70px}
@@ -908,7 +915,7 @@ header{
             <div class="mod-row session1" id="m1">
                 <div class="mod-header" onclick="toggleMod('m1')">
                     <div class="mod-border session1"></div>
-                    <span class="mod-num">L1</span>
+                    <img class="mod-img" src="img/l1_getting_started.png" alt="Getting Started" loading="lazy">
                     <span class="mod-title">
                         Getting Started with Tableau
                         <span class="mod-sub">Load data, plot types, maps, crosstabs, calculations</span>
@@ -957,7 +964,7 @@ header{
             <div class="mod-row session2" id="m2">
                 <div class="mod-header" onclick="toggleMod('m2')">
                     <div class="mod-border session2"></div>
-                    <span class="mod-num">L2</span>
+                    <img class="mod-img" src="img/l2_visual_analytics.png" alt="Visual Analytics" loading="lazy">
                     <span class="mod-title">
                         Visual Analytics
                         <span class="mod-sub">Marks, highlights, drill-down, hierarchies, parameters, sets</span>
