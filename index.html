@@ -731,12 +731,11 @@ header{
 .formula-section{margin:10px 0}
 .formula-card{
     display:flex;align-items:center;gap:10px;
-    padding:8px 12px;
+    padding:10px 14px;
     background:#0f172a;
     border:1px solid #1e293b;
     border-radius:8px;
     margin-bottom:6px;
-    cursor:pointer;
     transition:all .2s ease;
     position:relative;
 }
@@ -746,7 +745,7 @@ header{
     flex-shrink:0;
     font-size:0.72rem;font-weight:700;
     color:#94a3b8;
-    min-width:100px;
+    min-width:90px;
     font-family:'Outfit',sans-serif;
 }
 .formula-code{
@@ -758,16 +757,24 @@ header{
     word-break:break-all;
     user-select:all;
 }
-.formula-copy{
+.formula-copy-btn{
     flex-shrink:0;
-    font-size:0.62rem;font-weight:700;
-    color:#64748b;
+    display:inline-flex;align-items:center;gap:5px;
+    padding:5px 12px;
+    border-radius:6px;
+    border:1px solid #334155;
+    background:#1e293b;
+    color:#94a3b8;
+    font-size:0.68rem;font-weight:700;
+    font-family:'Outfit',sans-serif;
+    cursor:pointer;
+    transition:all .2s ease;
     text-transform:uppercase;
-    letter-spacing:0.08em;
-    transition:color .2s;
+    letter-spacing:0.06em;
 }
-.formula-card:hover .formula-copy{color:#3b82f6}
-.formula-card.copied .formula-copy{color:#10b981}
+.formula-copy-btn:hover{background:#334155;color:#e2e8f0;border-color:#475569}
+.formula-copy-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.formula-card.copied .formula-copy-btn{background:#059669;color:#fff;border-color:#059669}
 
 /* Stub note */
 .stub-note{
@@ -1172,8 +1179,11 @@ const TASKS = {
       s:"Sheet: Parameters with Sets\n• Right-click Product → Create New Set → 'TopProducts'\n• Choose items based on TopN Parameter (Top tab)\n• Bring TopProducts to Color",
       q:"How can you add a parameter control to the view?" },
     { n:10, t:"Calculation-based Parameter + Reference Line", chip:"file",
-      d:"Formula pattern:\nIF AVG([Shipping Cost]) > [Shipping Cost Cutoff]\nTHEN \"High\" ELSE \"Low\" END",
-      s:"Sheet 1: Check how 'Shipping cost cut-off' is used in 'Shipping cost color'\n\nSheet 2: Add a reference line\n• Use Analytics tab to add a reference line based on the parameter" },
+      d:"Create a calculated field using a parameter as a threshold:",
+      formulas:[
+        {name:"Shipping Cost Color", code:'IF AVG([Shipping Cost]) > [Shipping Cost Cutoff] THEN "High" ELSE "Low" END'}
+      ],
+      s:"Sheet 1: Check how 'Shipping cost cut-off' parameter is used in 'Shipping cost color'\n\nSheet 2: Add a reference line\n• Use Analytics tab to add a reference line based on the parameter" },
   ],
   s3: [
     { n:1, t:"Review the Dataset",
@@ -1275,21 +1285,27 @@ function renderFormulas(formulas){
   let html = '<div class="formula-section">';
   formulas.forEach((f,i) => {
     const id = 'f'+Date.now()+i;
-    html += `<div class="formula-card" id="${id}" onclick="copyFormula('${id}','${f.code.replace(/'/g,"\\'")}')">
+    const esc = f.code.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    html += `<div class="formula-card" id="${id}">
       <span class="formula-name">${f.name}</span>
       <code class="formula-code">${f.code}</code>
-      <span class="formula-copy">click to copy</span>
+      <button class="formula-copy-btn" onclick="copyFormula('${id}','${esc}')">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        <span>Copy</span>
+      </button>
     </div>`;
   });
   html += '</div>';
   return html;
 }
 function copyFormula(id, code){
-  navigator.clipboard.writeText(code).then(()=>{
+  const raw = code.replace(/&quot;/g,'"');
+  navigator.clipboard.writeText(raw).then(()=>{
     const el=document.getElementById(id);
     el.classList.add('copied');
-    el.querySelector('.formula-copy').textContent='copied!';
-    setTimeout(()=>{el.classList.remove('copied');el.querySelector('.formula-copy').textContent='click to copy';},2000);
+    const btn=el.querySelector('.formula-copy-btn span');
+    btn.textContent='Copied!';
+    setTimeout(()=>{el.classList.remove('copied');btn.textContent='Copy';},2000);
   });
 }
 
