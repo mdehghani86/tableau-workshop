@@ -166,7 +166,7 @@ header{
 .sb-group-header .sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .sb-group.session1 .sb-dot{background:var(--blue)}
 .sb-group.session2 .sb-dot{background:var(--teal)}
-.sb-group.session3 .sb-dot{background:var(--text-muted)}
+.sb-group.session3 .sb-dot{background:#8b5cf6}
 .sb-group-header .sb-count{
     margin-left:auto;font-size:0.68rem;font-weight:600;
     color:var(--text-muted);background:rgba(148,163,184,0.12);
@@ -205,8 +205,7 @@ header{
     margin-top:1px;
 }
 .sb-group.session2 .sb-item .sb-num{background:rgba(13,148,136,0.1);color:var(--teal-dark)}
-.sb-group.session3 .sb-item{opacity:0.5;pointer-events:none}
-.sb-group.session3 .sb-item .sb-num{background:rgba(148,163,184,0.12);color:var(--text-muted)}
+.sb-group.session3 .sb-item .sb-num{background:rgba(139,92,246,0.1);color:#7c3aed}
 .sb-item .sb-label{flex:1;min-width:0}
 .sb-item.sb-done .sb-label{text-decoration:line-through;opacity:0.65}
 
@@ -326,10 +325,10 @@ header{
 }
 .phase-header.session2 .phase-dot{background:var(--teal)}
 .phase-header.session3{
-    background:linear-gradient(135deg,rgba(148,163,184,0.08),rgba(148,163,184,0.02));
-    border-left:3px solid var(--text-muted);
+    background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.02));
+    border-left:3px solid #8b5cf6;
 }
-.phase-header.session3 .phase-dot{background:var(--text-muted)}
+.phase-header.session3 .phase-dot{background:#8b5cf6}
 
 .mod-row{
     background:var(--card-bg);
@@ -352,14 +351,18 @@ header{
 }
 .mod-border.session1{background:linear-gradient(180deg,var(--blue),#3b82f6)}
 .mod-border.session2{background:linear-gradient(180deg,var(--teal),#14b8a6)}
-.mod-border.session3{background:linear-gradient(180deg,var(--text-muted),#94a3b8)}
+.mod-border.session3{background:linear-gradient(180deg,#8b5cf6,#a78bfa)}
 .mod-num{
     font-size:0.78rem;font-weight:800;color:var(--blue);
     font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;
     min-width:38px;flex-shrink:0;padding-left:10px;
 }
 .mod-row.session2 .mod-num{color:var(--teal-dark)}
-.mod-row.session3 .mod-num{color:var(--text-muted)}
+.mod-row.session3 .mod-num{color:#7c3aed}
+.mod-row.session3 .task-num-inline{background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.2);color:#7c3aed}
+.mod-row.session3 .task-item:hover{background:rgba(139,92,246,0.03)}
+.mod-row.session3 .task-details-spec{background:rgba(139,92,246,0.04);border-left-color:#8b5cf6}
+.mod-row.session3 .task-progress{color:#7c3aed;background:rgba(139,92,246,0.08);border-color:rgba(139,92,246,0.18)}
 .mod-title{
     font-size:1.05rem;font-weight:700;
     color:var(--text-primary);flex:1;letter-spacing:-0.01em;
@@ -409,6 +412,11 @@ header{
     border-color:rgba(13,148,136,0.18);
     border-left-color:var(--teal);
 }
+.mod-row.session3.expanded .mod-chevron{color:#7c3aed}
+.mod-row.session3:hover{box-shadow:0 6px 22px rgba(139,92,246,0.08)}
+.mod-row.session3 .data-icon{background:rgba(139,92,246,0.08)}
+.mod-row.session3 .data-icon svg{stroke:#7c3aed}
+.mod-row.session3 .data-card:hover{background:rgba(139,92,246,0.05);border-color:rgba(139,92,246,0.25)}
 .mod-row.session3 .mod-intro{
     background:linear-gradient(135deg,rgba(148,163,184,0.08),rgba(255,255,255,0.6));
     border-color:rgba(148,163,184,0.25);
@@ -810,17 +818,15 @@ header{
             <div class="sb-items" id="sbg-2-items"></div>
         </div>
 
-        <div class="sb-group session3 collapsed" id="sbg-3">
+        <div class="sb-group session3" id="sbg-3">
             <button class="sb-group-header" onclick="toggleSbGroup('sbg-3')">
                 <span class="sb-dot"></span>
-                <span>Sessions 2 &amp; 3</span>
-                <span class="sb-count">soon</span>
+                <span>Session 2 · L3+L4</span>
+                <span class="sb-count">13</span>
                 <svg class="sb-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="sb-items">
-                <div class="sb-item"><span class="sb-num">S2</span><span class="sb-label">TBD — Advanced</span></div>
-                <div class="sb-item"><span class="sb-num">S3</span><span class="sb-label">TBD — Healthcare</span></div>
-            </div>
+            <div class="sb-items" id="sbg-3-items-l3"></div>
+            <div class="sb-items" id="sbg-3-items-l4"></div>
         </div>
     </aside>
 
@@ -847,7 +853,7 @@ header{
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-                <div class="stat-value"><span id="statDone">0</span><span class="total">&nbsp;/&nbsp;24</span></div>
+                <div class="stat-value"><span id="statDone">0</span><span class="total">&nbsp;/&nbsp;37</span></div>
                 <div class="stat-label">Tasks done</div>
             </div>
             <div class="stat-card">
@@ -871,6 +877,7 @@ header{
                 <div class="phase-dot"></div>
                 <span>Session 1</span>
                 <span class="phase-count">2 lectures · 24 tasks</span>
+            </div><!-- close Session 1 phase -->
             </div>
 
             <div class="mod-row session1" id="m1">
@@ -976,48 +983,72 @@ header{
                 </div>
             </div>
 
-            <!-- ═══ SESSION 2 & 3 STUB ═══ -->
+            <!-- ═══ SESSION 2 · LECTURE 3 + 4 ═══ -->
             <div class="phase-header session3">
                 <div class="phase-dot"></div>
-                <span>Coming Soon</span>
-                <span class="phase-count">Sessions 2 &amp; 3</span>
+                <span>Session 2</span>
+                <span class="phase-count">2 lectures · 13 tasks</span>
             </div>
 
             <div class="mod-row session3" id="m3">
                 <div class="mod-header" onclick="toggleMod('m3')">
                     <div class="mod-border session3"></div>
-                    <span class="mod-num">S3</span>
+                    <span class="mod-num">L3</span>
                     <span class="mod-title">
-                        Healthcare Analytics (preview)
-                        <span class="mod-sub">Emergency Department dataset — agenda to be published</span>
+                        Emergency Department Data Viz
+                        <span class="mod-sub">Calculated fields, heatmaps, KPIs, dual-axis charts</span>
                     </span>
-                    <span class="status-badge stub"><span class="dot"></span>Stub</span>
-                    <div class="mod-chevron">
-                        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                    </div>
+                    <span class="status-badge ready"><span class="dot"></span>Ready</span>
+                    <div class="mod-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
                 </div>
                 <div class="mod-body">
                     <div class="mod-body-inner">
                         <div class="mod-intro">
-                            Session 3 will apply everything from Sessions 1 and 2 to a <strong>healthcare dataset</strong>. You'll explore Emergency Department arrivals, wait times, and capacity patterns. Tasks will be posted closer to the workshop date.
+                            Apply Tableau to a real <strong>Emergency Department</strong> dataset. Create calculated fields (Length of Stay, distinct patient count), build heatmaps for hourly congestion, KPI dashboards with conditional color coding, and dual-axis time series.
                         </div>
                         <div class="data-section">
-                            <div class="data-label">Preview data</div>
+                            <div class="data-label">Download data for this lecture</div>
                             <div class="data-grid">
                                 <a class="data-card" href="session-3/data/Emergency_Department.xlsx" download>
                                     <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-                                    <div class="data-info"><div class="data-title">Emergency Department</div><div class="data-meta">XLSX · Session 3 preview</div></div>
+                                    <div class="data-info"><div class="data-title">Emergency Department</div><div class="data-meta">XLSX · ER visits, wait times, diagnoses</div></div>
                                 </a>
                                 <a class="data-card" href="session-3/Tableau%20Agenda-3.xlsx" download>
                                     <div class="data-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-                                    <div class="data-info"><div class="data-title">Agenda (draft)</div><div class="data-meta">XLSX · preview</div></div>
+                                    <div class="data-info"><div class="data-title">Agenda (Session 2)</div><div class="data-meta">XLSX · L3 + L4 tasks</div></div>
                                 </a>
                             </div>
                         </div>
-                        <div class="stub-note">
-                            <strong>Full task list for Session 3 coming soon.</strong><br>
-                            Agenda under development.
+                        <div class="task-label-row">
+                            <div class="data-label" style="margin:0">Tasks</div>
+                            <span class="task-progress" id="s3-progress">0 / 7</span>
                         </div>
+                        <div class="task-list" id="s3-tasks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mod-row session3" id="m4">
+                <div class="mod-header" onclick="toggleMod('m4')">
+                    <div class="mod-border session3"></div>
+                    <span class="mod-num">L4</span>
+                    <span class="mod-title">
+                        Maps
+                        <span class="mod-sub">Geographic fields, symbol maps, filled maps, map layers</span>
+                    </span>
+                    <span class="status-badge ready"><span class="dot"></span>Ready</span>
+                    <div class="mod-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                </div>
+                <div class="mod-body">
+                    <div class="mod-body-inner">
+                        <div class="mod-intro">
+                            Explore Tableau's mapping capabilities. Add geographic fields, build <strong>symbol maps</strong> and <strong>filled maps</strong>, change shapes, and customize map layers and options.
+                        </div>
+                        <div class="task-label-row">
+                            <div class="data-label" style="margin:0">Tasks</div>
+                            <span class="task-progress" id="s4-progress">0 / 6</span>
+                        </div>
+                        <div class="task-list" id="s4-tasks"></div>
                     </div>
                 </div>
             </div>
@@ -1101,6 +1132,38 @@ const TASKS = {
     { n:10, t:"Calculation-based Parameter + Reference Line", chip:"file",
       d:"Formula pattern:\nIF AVG([Shipping Cost]) > [Shipping Cost Cutoff]\nTHEN \"High\" ELSE \"Low\" END",
       s:"Sheet 1: Check how 'Shipping cost cut-off' is used in 'Shipping cost color'\n\nSheet 2: Add a reference line\n• Use Analytics tab to add a reference line based on the parameter" },
+  ],
+  s3: [
+    { n:1, t:"Review the Dataset",
+      d:"Open Emergency_Department.xlsx and review the data.\nImport data into Tableau (create a new Workbook)." },
+    { n:2, t:"Calculated Fields", chip:"plot",
+      d:"Create three new calculated fields:",
+      s:"[LOS] = DATEDIFF('day', [Check In Time], [Discharge Datetime])\n[NOP] = COUNTD([MRN Number])   (distinct patient count)\n[Number of Records] = 1" },
+    { n:3, t:"Patient Hourly Load — Heatmap", chip:"plot",
+      shelf:{sheet:"Patient Hourly Load",rows:[["HOUR(Check In Time)","dim"]],cols:[["WEEKDAY(Check In Time)","dim"]],color:[["Number of Records","meas","agg"]],marksType:"Square",note:"Fit Width · Change filter to dropdown box"},
+      q:"Do you observe any specific congestion pattern in the ER?" },
+    { n:4, t:"Patient Distribution", chip:"plot",
+      shelf:{sheet:"Clinical Unit Patient Distribution",rows:[["Clinical Unit","dim"]],color:[["Wait Time Min","meas","agg"]],size:[["NOP","meas","agg"]],label:[["Diagnosis Primary","dim"]],marksType:"Square",note:"Filter Clinical Unit to 'Emergency'"} },
+    { n:5, t:"Daily Averages + Reference Line", chip:"plot",
+      shelf:{sheet:"Daily Averages",cols:[["MONTH(Check In Time)","dim"],["DAY(Check In Time)","dim"]],rows:[["Number of Records","meas","agg"]],note:"Filter: Jan + Feb only · Add reference line: Avg Wait Time per pane"} },
+    { n:6, t:"Wait Time KPI — Bar + Circle", chip:"plot",
+      shelf:{sheet:"Wait Time KPI",cols:[["Wait Time Min","meas"]],rows:[["Clinical Units","dim"]],marksType:"Bar + Circle",note:"Add 60-min reference line\nCalculated field: WTcolorcode = IF MEDIAN([Wait Time Min]) > 60 THEN 'Over Target' ELSE 'Below Target' END\nAdd Parameters for color coding"} },
+    { n:7, t:"Busy Times — Dual Axis", chip:"plot",
+      shelf:{sheet:"Busy Times of the Day",cols:[["HOUR(Check In Time)","dim"]],rows:[["NOP","meas","agg"],["Wait Time Min","meas","agg"]],note:"Make a Dual Axis graph"} },
+  ],
+  s4: [
+    { n:1, t:"Review Maps Options", chip:"file",
+      d:"Open getting_started_with_mapping.twbx and explore the mapping workbook." },
+    { n:2, t:"Adding Geographical Fields",
+      d:"Change the type of Postal Codes to a geographic role so Tableau recognizes them as map-ready." },
+    { n:3, t:"Mapping Countries", chip:"plot",
+      shelf:{sheet:"Map1",detail:[["Country","dim"],["State","dim"]],color:[["Market","dim"]],note:"Add Countries to map → then add States → Color by Market"} },
+    { n:4, t:"Symbol Maps",
+      d:"Change shapes on the symbol map. Experiment with different mark shapes." },
+    { n:5, t:"Filled Maps", chip:"plot",
+      d:"Change points to filled (shaped) maps, or add Profit to Color to see regional performance." },
+    { n:6, t:"Map Layers & Options",
+      d:"From the Map menu, select Map Layers.\nExplore the map options: terrain, streets, light/dark styles, data layers." },
   ]
 };
 
@@ -1156,9 +1219,10 @@ function renderShelf(sh){
 // ============================================
 // RENDER TASKS
 // ============================================
-function renderTasks(groupKey, tasks) {
+function renderTasks(groupKey, tasks, sbTarget) {
   const list = document.getElementById(`${groupKey}-tasks`);
-  const sbItems = document.getElementById(`sbg-${groupKey === 's1' ? '1' : '2'}-items`);
+  const sbMap = {s1:'sbg-1-items', s2:'sbg-2-items'};
+  const sbItems = document.getElementById(sbTarget || sbMap[groupKey]);
 
   const listHtml = [];
   const sbHtml = [];
@@ -1208,6 +1272,8 @@ function renderTasks(groupKey, tasks) {
 
 renderTasks('s1', TASKS.s1);
 renderTasks('s2', TASKS.s2);
+renderTasks('s3', TASKS.s3, 'sbg-3-items-l3');
+renderTasks('s4', TASKS.s4, 'sbg-3-items-l4');
 
 // ============================================
 // INTERACTIONS
@@ -1275,7 +1341,7 @@ function loadProgress(){
 }
 
 function updateCounts(){
-    ['s1','s2'].forEach(key=>{
+    ['s1','s2','s3','s4'].forEach(key=>{
         const total=document.querySelectorAll(`#${key}-tasks .task-item`).length;
         const done=document.querySelectorAll(`#${key}-tasks .task-item.done`).length;
         const el=document.getElementById(`${key}-progress`);
